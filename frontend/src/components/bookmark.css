@@ -1,0 +1,13 @@
+.gallery-card-bookmark {
+  position: absolute;
+  top: 0;
+  right: 0.8rem;
+  line-height: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #d21404;
+}
+
+.gallery-card-bookmark-full {
+  font-size: 2rem;
+}

@@ -1,0 +1,10 @@
+.login-form {
+  padding: 3rem 1rem;
+  box-sizing: border-box;
+}
+
+.login-form-header {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem 0;
+}

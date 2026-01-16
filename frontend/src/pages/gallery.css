@@ -1,0 +1,24 @@
+.wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.gallery-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+@media screen and (min-width: 500px) {
+  .gallery-wrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .gallery-wrapper {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
