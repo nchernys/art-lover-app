@@ -8,9 +8,11 @@ import type { UploadImageData } from "../types/uploadImageData";
 function CardGallerySearchResult({
   data,
   imageUploaded,
+  onSuccess,
 }: {
   data: ArtworkSearchResultInterface;
   imageUploaded: UploadImageData;
+  onSuccess: () => void;
 }) {
   const [imageSelected, setImageSelected] = useState<string>("");
   const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
@@ -36,7 +38,6 @@ function CardGallerySearchResult({
   }, [imageUploaded.image]);
 
   const handleSubmit = async () => {
-    console.log("DATA TO SAVE   ", data);
     if (!imageUploaded.image) return;
     const newData = new FormData();
     newData.append("title", data.title);
@@ -52,17 +53,15 @@ function CardGallerySearchResult({
       newData.append("imageUrl", imageSelected);
     }
 
-    console.log("NEW DATA TO SAVE   ", newData);
     const response = await fetch("http://localhost:8080/api/add", {
       method: "POST",
+      credentials: "include",
       body: newData,
     });
     if (!response.ok) {
       throw new Error("Upload failed");
     }
-
-    const result = await response.json();
-    console.log(result);
+    onSuccess();
   };
 
   if (!imageSrc) return;

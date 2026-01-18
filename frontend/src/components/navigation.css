@@ -3,7 +3,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem 2rem;
   flex-wrap: wrap;
 }
 
@@ -16,12 +16,23 @@ nav {
 .navIcons {
   font-size: 1.5rem;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
+.navIcons div {
+  display: flex;
+  gap: 1rem;
+}
+
 .navIcons a {
-  display: block;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
   padding: 0.25rem;
   border-radius: 0.5rem;
   border: 4px rgb(224, 224, 224) solid;

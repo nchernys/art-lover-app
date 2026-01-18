@@ -5,6 +5,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkSearchResultInterface } from "../types/artworkSearchResult";
 import CardGallerySearchResult from "../components/cardGallerySearchResult";
 import type { UploadImageData } from "../types/uploadImageData";
+import { Toast } from "../components/toast";
 
 function SearchByImage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -12,6 +13,7 @@ function SearchByImage() {
   const [imageUploaded, setImageUploaded] = useState<UploadImageData>({
     image: null,
   });
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -22,19 +24,20 @@ function SearchByImage() {
     data.append("image", file);
     const response = await fetch(`http://localhost:8080/api/recognize`, {
       method: "POST",
+      credentials: "include",
       body: data,
     });
 
     if (!response.ok) throw new Error("Failed to recognize the image.");
 
     const result = await response.json();
-    console.log(result);
     setLoading(false);
     setOptions(result);
   };
 
   return (
-    <>
+    <div>
+      {showToast && <Toast message="Saved successfully!" />}
       <form className="search-image-form">
         <div className="search-image-header">
           Want to know more about an artwork, a landmark, or a famous
@@ -56,11 +59,17 @@ function SearchByImage() {
               key={index}
               data={op}
               imageUploaded={imageUploaded}
+              onSuccess={() => {
+                setShowToast(true);
+                setTimeout(() => {
+                  setOptions([]);
+                }, 3000);
+              }}
             />
           ))
         )}
       </div>
-    </>
+    </div>
   );
 }
 

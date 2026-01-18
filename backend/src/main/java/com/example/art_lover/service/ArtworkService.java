@@ -10,6 +10,7 @@ import com.example.art_lover.model.ArtworkModel;
 import com.example.art_lover.repository.ArtworksRepository;
 import com.example.art_lover.dto.ArtworkSearchResult;
 import com.example.art_lover.dto.R2ImageUploadResponse;
+import org.springframework.security.core.Authentication;
 
 @Service
 public class ArtworkService {
@@ -32,24 +33,25 @@ public class ArtworkService {
         return artwork;
     }
 
-    public List<ArtworkModel> showArtAll() {
-        // fetch all artwork records from the db
-        List<ArtworkModel> artworks = repository.findAll();
+    public List<ArtworkModel> showByUserId(String userId) {
+        // fetch all artwork records from the db for the currently logged in user
+        List<ArtworkModel> artworks = repository.findByUserId(userId);
         return artworks;
     }
 
-    public void saveArtwork(ArtworkModel artwork, MultipartFile imageFile) {
+    public void saveArtwork(ArtworkModel artwork, MultipartFile imageFile, String userId) {
         if (imageFile != null && !imageFile.isEmpty()) {
             // save the image to Cloudflare R2 storage and get the image url
             R2ImageUploadResponse data = r2ImageService.uploadImage(imageFile);
             // save the image url to the artwork object
             artwork.setImageUrl(data.getUrl());
             artwork.setImageKey(data.getKey());
-            System.out.println("ARTWORK WITH KEY ___________ " + artwork.getImageKey());
+
         } else {
             artwork.setImageUrl(artwork.getImageUrl());
         }
         // save the artwork object with the image url to MongoDB
+        artwork.setUserId(userId);
         repository.save(artwork);
     }
 

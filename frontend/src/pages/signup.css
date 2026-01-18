@@ -12,3 +12,10 @@
 .login-signup-message a {
   color: var(--hot-pink);
 }
+
+.error-message {
+  font-size: 0.8rem;
+  color: var(--dark-red);
+  display: flex;
+  gap: 0.25rem;
+}

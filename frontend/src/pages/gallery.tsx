@@ -15,7 +15,10 @@ function Gallery() {
   }, []);
 
   const fetchData = async () => {
-    const response = await fetch("http://localhost:8080/api/show");
+    const response = await fetch("http://localhost:8080/api/show", {
+      method: "GET",
+      credentials: "include",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch artworks.");
@@ -29,6 +32,7 @@ function Gallery() {
     try {
       const response = await fetch(`http://localhost:8080/api/delete/${id}`, {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -60,6 +64,7 @@ function Gallery() {
         `http://localhost:8080/api/update/bookmark/${id}`,
         {
           method: "PATCH",
+          credentials: "include",
           body: updateBookmark,
         }
       );

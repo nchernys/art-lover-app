@@ -22,12 +22,14 @@ public class ArtworkModel {
     private String imageUrl;
     private String imageKey;
 
+    private String userId;
+
     public ArtworkModel() {
         // required for frameworks
     }
 
     public ArtworkModel(String id, String title, String artist, String year, String continent, String country,
-            Boolean bookmark, String imageUrl, String imageKey, String description, String movement) {
+            Boolean bookmark, String imageUrl, String imageKey, String description, String movement, String userId) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -39,6 +41,7 @@ public class ArtworkModel {
         this.imageKey = imageKey;
         this.description = description;
         this.movement = movement;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -85,6 +88,10 @@ public class ArtworkModel {
         return movement;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -127,6 +134,10 @@ public class ArtworkModel {
 
     public void setMovement(String movement) {
         this.movement = movement;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

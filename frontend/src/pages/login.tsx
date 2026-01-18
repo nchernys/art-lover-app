@@ -1,10 +1,12 @@
 import "./login.css";
 import { useState } from "react";
-import type { User, LoginResponse } from "../types/user";
+import type { User } from "../types/user";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
+  const navigate = useNavigate();
   const [userCreds, setUserCreds] = useState<User>({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -23,16 +25,21 @@ export function Login() {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    const response: Response = await fetch("http://localhost:8080/api/login", {
-      method: "POST",
-      body: JSON.stringify(userCreds),
-    });
+    const response: Response = await fetch(
+      "http://localhost:8080/api/auth/login",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userCreds),
+      }
+    );
+    navigate("/");
     if (!response.ok) {
-      throw new Error("Upload failed");
+      throw new Error("Login failed");
     }
-
-    const result: LoginResponse = await response.json();
-    console.log(result);
   };
 
   return (
@@ -40,11 +47,11 @@ export function Login() {
       <form onSubmit={handleSubmit}>
         <div className="login-form-header">Login</div>
         <div className="form-group">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="text"
-            name="username"
-            value={userCreds.username}
+            name="email"
+            value={userCreds.email}
             onChange={handleChange}
           />
         </div>
@@ -59,6 +66,9 @@ export function Login() {
         </div>
         <button>Submit</button>
       </form>
+      <div className="login-signup-message">
+        Don't have an account? <a href="/sign-up">Sign Up</a>
+      </div>
     </div>
   );
 }

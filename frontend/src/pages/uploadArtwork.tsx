@@ -45,6 +45,7 @@ function UploadArtwork() {
 
     const response = await fetch("http://localhost:8080/api/add", {
       method: "POST",
+      credentials: "include",
       body: data,
     });
     if (!response.ok) {

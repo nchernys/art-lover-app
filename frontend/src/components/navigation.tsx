@@ -7,32 +7,50 @@ import {
   faCamera,
   faBookmark,
   faUser,
+  faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Navigation() {
+type NavigationProps = {
+  userEmail: string | null;
+};
+
+function Navigation({ userEmail }: NavigationProps) {
+  console.log("USER EMAIL ", userEmail);
   return (
     <>
       <nav>
         <div className="header">Art Lover</div>
+
         <div className="navIcons">
-          <a href="/camera">
-            <FontAwesomeIcon icon={faCamera} className="navIcon" />
-          </a>
-          <a href="/upload">
-            <FontAwesomeIcon icon={faPlus} className="navIcon" />
-          </a>
-          <a href="/search">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="navIcon" />
-          </a>
-          <a href="/">
-            <FontAwesomeIcon icon={faEye} className="navIcon" />
-          </a>
-          <a href="/bookmarked">
-            <FontAwesomeIcon icon={faBookmark} />
-          </a>
-          <a href="/login">
-            <FontAwesomeIcon icon={faUser} />
-          </a>
+          <div>
+            <a href="/camera">
+              <FontAwesomeIcon icon={faCamera} className="navIcon" />
+            </a>
+            <a href="/upload">
+              <FontAwesomeIcon icon={faPlus} className="navIcon" />
+            </a>
+            <a href="/search">
+              <FontAwesomeIcon icon={faMagnifyingGlass} className="navIcon" />
+            </a>
+          </div>
+          <div>
+            <a href="/">
+              <FontAwesomeIcon icon={faEye} className="navIcon" />
+            </a>
+            <a href="/bookmarked">
+              <FontAwesomeIcon icon={faBookmark} />
+            </a>
+
+            {!userEmail ? (
+              <a href="/login">
+                <FontAwesomeIcon icon={faUser} />
+              </a>
+            ) : (
+              <a href="/logout">
+                <FontAwesomeIcon icon={faArrowRightFromBracket} />
+              </a>
+            )}
+          </div>
         </div>
       </nav>
     </>

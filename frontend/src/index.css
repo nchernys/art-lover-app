@@ -1,6 +1,8 @@
 :root {
   --dark-gray: rgb(30, 30, 30);
   --whitesmoke: whitesmoke;
+  --hot-pink: #e400e4;
+  --dark-red: #c50000;
 }
 
 body {

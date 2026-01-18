@@ -7,4 +7,5 @@ export interface ArtworkSearchResultInterface {
   country: string;
   description: string;
   imageUrls: string[];
+  userId: string;
 }

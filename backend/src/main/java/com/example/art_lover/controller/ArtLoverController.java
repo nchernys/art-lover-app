@@ -3,23 +3,39 @@ package com.example.art_lover.controller;
 import java.util.List;
 import java.util.Collections;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.art_lover.dto.ArtworkResponse;
 import com.example.art_lover.dto.ArtworkSearchResult;
+import com.example.art_lover.exceptions.EmailAlreadyExistsException;
 import com.example.art_lover.model.ArtworkModel;
+import com.example.art_lover.model.UserModel;
+import com.example.art_lover.repository.UserRepository;
+import com.example.art_lover.security.dto.AuthRequest;
+import com.example.art_lover.security.dto.AuthResponse;
+import com.example.art_lover.security.service.JWTService;
 import com.example.art_lover.service.ArtworkService;
 import com.example.art_lover.service.GeminiAIDescriptionService;
 import com.example.art_lover.service.GeminiAILImageRecognitionService;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpHeaders;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.RequestPart;
 import java.io.IOException;
 
@@ -41,9 +57,11 @@ public class ArtLoverController {
 	@PostMapping(value = "/api/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ArtworkResponse> addArtwork(
 			@ModelAttribute ArtworkModel artwork,
-			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
+			Authentication authentication) {
 
-		artworkService.saveArtwork(artwork, imageFile);
+		String userId = authentication.getName();
+		artworkService.saveArtwork(artwork, imageFile, userId);
 
 		return ResponseEntity.ok(
 				new ArtworkResponse("Artwork saved successfully"));
@@ -55,8 +73,9 @@ public class ArtLoverController {
 	}
 
 	@GetMapping("/api/show")
-	public List<ArtworkModel> showArtAll() {
-		return artworkService.showArtAll();
+	public List<ArtworkModel> show(Authentication authentication) {
+		String userId = authentication.getName();
+		return artworkService.showByUserId(userId);
 	}
 
 	@DeleteMapping("/api/delete/{id}")
@@ -93,7 +112,6 @@ public class ArtLoverController {
 	@PostMapping(value = "/api/recognize", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public List<ArtworkSearchResult> recognizeArtworkFromImage(@RequestParam("image") MultipartFile image) {
 		try {
-			System.out.println("IMAGE " + image);
 			List<ArtworkSearchResult> results = aiImageRecognitionService.recognizeImage(image);
 			return results;
 		} catch (IOException e) {
@@ -102,4 +120,85 @@ public class ArtLoverController {
 		}
 	}
 
+	@RestController
+	@RequestMapping("/api/auth")
+	public class AuthController {
+
+		private final UserRepository userRepository;
+		private final PasswordEncoder passwordEncoder;
+		private final JWTService jwtService;
+
+		public AuthController(UserRepository userRepository,
+				PasswordEncoder passwordEncoder,
+				JWTService jwtService) {
+			this.userRepository = userRepository;
+			this.passwordEncoder = passwordEncoder;
+			this.jwtService = jwtService;
+		}
+
+		@PostMapping("/signup")
+		public ResponseEntity<Void> signup(@RequestBody AuthRequest req) {
+
+			if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+				throw new EmailAlreadyExistsException("Account already exists");
+			}
+
+			UserModel user = new UserModel();
+			user.setEmail(req.getEmail());
+			user.setPassword(passwordEncoder.encode(req.getPassword()));
+
+			userRepository.save(user);
+
+			return ResponseEntity.ok().build();
+		}
+
+		@PostMapping("/login")
+		public ResponseEntity<Void> login(@RequestBody AuthRequest req,
+				HttpServletResponse response) {
+
+			UserModel user = userRepository.findByEmail(req.getEmail())
+					.orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+			if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+				throw new RuntimeException("Invalid credentials");
+			}
+
+			String token = jwtService.generateToken(user.getId());
+
+			System.out.println("USER CREDS ____________________________ " + user.getId());
+
+			ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", token)
+					.httpOnly(true)
+					.secure(false) // true in production
+					.path("/")
+					.sameSite("Lax") // Strict in production
+					.maxAge(60 * 60) // 1 hour
+					.build();
+
+			response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+			return ResponseEntity.ok().build();
+		}
+
+		@PostMapping("/logout")
+		public ResponseEntity<Void> logout(HttpServletResponse response) {
+
+			ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", "")
+					.httpOnly(true)
+					.secure(true)
+					.path("/")
+					.maxAge(0)
+					.build();
+
+			response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+			return ResponseEntity.ok().build();
+		}
+
+		@GetMapping("/me")
+		public ResponseEntity<String> me(Authentication authentication) {
+			return ResponseEntity.ok(authentication.getName()); // id
+		}
+
+	}
 }
