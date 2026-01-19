@@ -1,0 +1,51 @@
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.navIcons {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.navIcons div {
+  display: flex;
+  gap: 1rem;
+}
+
+.navIcons a {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  border: 4px rgb(224, 224, 224) solid;
+  line-height: 0;
+  color: inherit;
+}
+
+.navIcons a:hover,
+.navIcons a:active {
+  border: 4px var(--dark-gray) solid;
+  color: inherit;
+}
+
+.navIcons a:visited {
+  color: inherit;
+}

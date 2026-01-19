@@ -1,0 +1,54 @@
+import "./cardGalleryFullView.css";
+import Bookmark from "./bookmark";
+import type { ArtworkInterface } from "../types/artwork";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+
+function CardGalleryFullView({
+  data,
+  onClose,
+  onBookmarkUpdate,
+}: {
+  data: ArtworkInterface;
+  onClose: () => void;
+  onBookmarkUpdate: (id: string) => Promise<void>;
+}) {
+  return (
+    <div className="gallary-card-screen-full-view">
+      <div className="gallery-card-wrapper-full-view">
+        <div className="gallery-card-nav-full-view">
+          <div
+            className="gallery-card-close-full-view"
+            onClick={() => onClose()}
+          >
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </div>
+          <Bookmark data={data} onBookmarkUpdate={onBookmarkUpdate} />
+        </div>
+        <div className="gallery-card-content-wrapper-full-view">
+          <div className="gallery-card-image-full-view">
+            {data.imageKey !== null ? (
+              <img
+                src={`https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`}
+                alt={`${data.imageKey}`}
+              />
+            ) : (
+              <img src={data.imageUrl} alt={`${data.imageUrl}`} />
+            )}
+          </div>
+          <div className="gallery-card-details gallery-card-details-full-view">
+            <div className="gallery-card-detailes-wrapper-full-view">
+              <div className="gallery-card-title">{data.title}</div>
+              <div className="gallery-card-artist">{data.artist}</div>
+              <div className="gallery-card-movement">{data.movement}</div>
+              <div className="gallery-card-year">{data.year}</div>
+              <div className="gallery-card-description">{data.description}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default CardGalleryFullView;

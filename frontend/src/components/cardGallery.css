@@ -1,0 +1,72 @@
+.gallery-card-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgb(200, 200, 200);
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-card-content-wrapper {
+  padding: 0.8rem;
+}
+
+.gallery-card-delete {
+  position: absolute;
+  width: 4.5rem;
+  height: 4.5rem;
+  padding: 2.55rem 0 0 2.58rem;
+  top: -1.9rem;
+  left: -2rem;
+  line-height: 1;
+  font-size: 0.8rem;
+  border-radius: 50%;
+  color: transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.gallery-card-wrapper:hover > .gallery-card-delete {
+  background-color: rgb(10, 10, 10, 0.7);
+  color: var(--whitesmoke);
+}
+
+.gallery-card-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.2;
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+.gallery-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-card-details {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 1rem;
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+}
+
+.gallery-card-details-play {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.gallery-card-title {
+  font-weight: 700;
+}
+
+.gallery-card-year {
+  font-style: italic;
+}

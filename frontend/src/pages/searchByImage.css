@@ -1,0 +1,73 @@
+.search-image-form {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  gap: 2rem;
+}
+
+.search-image-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.search-image-form input {
+  width: auto;
+  background-color: var(--dark-gray);
+  color: var(--whitesmoke);
+  border: 1px var(--dark-gray) solid;
+}
+
+.search-image-form input[type="file"] {
+  max-width: 50%;
+}
+
+.search-image-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.search-image-content .loader-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.search-image-content .loader {
+  font-size: 2.5rem;
+  transform-origin: center;
+  animation: spin infinite 2s linear;
+}
+
+.search-image-content .searching {
+  font-size: 2rem;
+  font-weight: 600;
+  animation: fadeOut infinite 3s ease-in-out;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  0% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeOut {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}

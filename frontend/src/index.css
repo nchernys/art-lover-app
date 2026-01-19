@@ -1,0 +1,24 @@
+:root {
+  --dark-gray: rgb(30, 30, 30);
+  --whitesmoke: whitesmoke;
+  --hot-pink: #e400e4;
+  --dark-red: #c50000;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 1rem;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+#root {
+  max-width: 800px;
+  width: 100%;
+}

@@ -1,0 +1,11 @@
+# Spring Boot
+backend/src/main/resources/application.properties
+
+# React
+frontend/node_modules/
+frontend/.env
+
+# OS / IDE
+.vscode/
+.idea/
+.DS_Store

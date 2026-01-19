@@ -1,0 +1,25 @@
+.toast {
+  width: auto;
+  height: auto;
+  padding: 1rem 2rem;
+  position: fixed;
+  border-radius: 0.5rem;
+  bottom: 1rem;
+  right: 2rem;
+  background-color: var(--dark-gray);
+  color: var(--whitesmoke);
+  animation: slideIn 3s forwards ease-in-out;
+}
+
+@keyframes slideIn {
+  0%,
+  100% {
+    transform: translateX(300px);
+  }
+  20% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(0);
+  }
+}

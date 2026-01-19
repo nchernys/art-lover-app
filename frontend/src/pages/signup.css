@@ -1,0 +1,21 @@
+.login-form {
+  padding: 2rem 1rem 1rem;
+  box-sizing: border-box;
+}
+
+.login-form-header {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem 0;
+}
+
+.login-signup-message a {
+  color: var(--hot-pink);
+}
+
+.error-message {
+  font-size: 0.8rem;
+  color: var(--dark-red);
+  display: flex;
+  gap: 0.25rem;
+}

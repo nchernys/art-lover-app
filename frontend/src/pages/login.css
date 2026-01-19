@@ -1,0 +1,14 @@
+.login-form {
+  padding: 2rem 1rem 1rem;
+  box-sizing: border-box;
+}
+
+.login-form-header {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1rem 0;
+}
+
+.login-signup-message a {
+  color: var(--hot-pink);
+}
