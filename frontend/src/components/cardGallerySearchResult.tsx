@@ -85,10 +85,19 @@ function CardGallerySearchResult({
                     : "transparent 8px solid",
               }}
               onClick={() => (
-                setImageSelected(imageSrc), console.log(imageSrc)
+                setImageSelected(imageSrc),
+                console.log(imageSrc)
               )}
             >
-              <img src={imageSrc} alt="image" />
+              <img
+                src={imageSrc}
+                alt="image"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                width={300}
+                height={300}
+              />
             </div>
 
             {data.imageUrls &&

@@ -187,7 +187,7 @@ public class ArtLoverController {
 
 			ResponseCookie cookie = ResponseCookie.from("AUTH_TOKEN", "")
 					.httpOnly(true)
-					.secure(true)
+					.secure(false) // true in production
 					.path("/")
 					.maxAge(0)
 					.build();

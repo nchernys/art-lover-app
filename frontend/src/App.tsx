@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+
+import { Routes, Route, useNavigate } from "react-router-dom";
 import UploadArtwork from "./pages/uploadArtwork";
 import Navigation from "./components/navigation";
 import Gallery from "./pages/gallery";
@@ -11,22 +12,48 @@ import { Signup } from "./pages/signup";
 import ProtectedRoute from "./security/protectedRoute";
 
 export default function App() {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const fetchMe = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/me", {
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Login failed");
+
+      const data = await response.text(); // NOT json()
+      setUserId(data);
+    } catch (error) {
+      setUserId(null);
+      console.log("Error: ", error);
+    }
+  };
+
   useEffect(() => {
-    fetch("http://localhost:8080/api/auth/me", {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error();
-        return res.text(); // NOT json()
-      })
-      .then((email) => setUserEmail(email))
-      .catch(() => setUserEmail(null));
+    fetchMe();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Logout failed.");
+
+      navigate("/login");
+      fetchMe();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
 
   return (
     <>
-      <Navigation userEmail={userEmail} />
+      <Navigation userId={userId} onLogout={handleLogout} />
       <Routes>
         <Route
           path="/"
@@ -60,7 +87,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={fetchMe} />} />
         <Route path="/sign-up" element={<Signup />} />
       </Routes>
     </>

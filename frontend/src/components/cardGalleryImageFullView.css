@@ -1,0 +1,10 @@
+.card-gallery-image-full-view-wrapper {
+  width: 90%;
+  height: 90%;
+}
+
+.card-gallery-image-full-view-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

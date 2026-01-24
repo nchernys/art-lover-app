@@ -3,7 +3,11 @@ import { useState } from "react";
 import type { User } from "../types/user";
 import { useNavigate } from "react-router-dom";
 
-export function Login() {
+type LoginProps = {
+  onLogin: () => void;
+};
+
+export function Login({ onLogin }: LoginProps) {
   const navigate = useNavigate();
   const [userCreds, setUserCreds] = useState<User>({
     email: "",
@@ -22,7 +26,7 @@ export function Login() {
   };
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
     const response: Response = await fetch(
@@ -34,12 +38,13 @@ export function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userCreds),
-      }
+      },
     );
-    navigate("/");
     if (!response.ok) {
       throw new Error("Login failed");
     }
+    navigate("/");
+    onLogin();
   };
 
   return (

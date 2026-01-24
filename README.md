@@ -1,4 +1,4 @@
-# ART LOVER APP
+# ART LOVER APP (in progress)
 
 As an art enthusiast, I enjoy learning about artworks beyond simply viewing an image, including their historical context, artistic movements, and the stories behind them. However, museum descriptions are often limited to brief blurbs or basic facts such as the title, artist, country, and year of creation, which can feel disappointing and, at times, elitist—serving primarily those who already know a great deal about art.
 

@@ -3,15 +3,18 @@ import Bookmark from "./bookmark";
 import type { ArtworkInterface } from "../types/artwork";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { CardCornerAction } from "./cardCornerAction";
 
 function CardGalleryFullView({
   data,
   onClose,
   onBookmarkUpdate,
+  onImageFullView,
 }: {
   data: ArtworkInterface;
   onClose: () => void;
   onBookmarkUpdate: (id: string) => Promise<void>;
+  onImageFullView: () => void;
 }) {
   return (
     <div className="gallary-card-screen-full-view">
@@ -27,6 +30,12 @@ function CardGalleryFullView({
         </div>
         <div className="gallery-card-content-wrapper-full-view">
           <div className="gallery-card-image-full-view">
+            <CardCornerAction
+              onAction={onImageFullView}
+              payload={data.imageKey !== null ? data.imageKey : data.imageUrl}
+              corner={"bottomLeft"}
+              icon={"zoom"}
+            />
             {data.imageKey !== null ? (
               <img
                 src={`https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`}

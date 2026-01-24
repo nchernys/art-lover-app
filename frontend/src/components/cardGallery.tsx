@@ -1,8 +1,9 @@
 import "./cardGallery.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlay, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkInterface } from "../types/artwork";
 import Bookmark from "./bookmark";
+import { CardCornerAction } from "./cardCornerAction";
 
 function CardGallery({
   data,
@@ -18,9 +19,7 @@ function CardGallery({
   return (
     <>
       <div className="gallery-card-wrapper">
-        <div className="gallery-card-delete" onClick={() => onDelete(data.id)}>
-          <FontAwesomeIcon icon={faXmark} />
-        </div>
+        <CardCornerAction onAction={onDelete} payload={data.id} />
         <Bookmark data={data} onBookmarkUpdate={onBookmarkUpdate} />
 
         <div className="gallery-card-content-wrapper">
@@ -31,7 +30,15 @@ function CardGallery({
                 alt={`${data.imageKey}`}
               />
             ) : (
-              <img src={data.imageUrl} alt={`${data.imageUrl}`} />
+              <img
+                src={data.imageUrl}
+                alt={`${data.imageUrl}`}
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                width={300}
+                height={300}
+              />
             )}
           </div>
           <div className="gallery-card-details">

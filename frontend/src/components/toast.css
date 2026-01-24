@@ -9,6 +9,7 @@
   background-color: var(--dark-gray);
   color: var(--whitesmoke);
   animation: slideIn 3s forwards ease-in-out;
+  z-index: 9999;
 }
 
 @keyframes slideIn {

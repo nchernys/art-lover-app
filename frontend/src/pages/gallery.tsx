@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import CardGallery from "../components/cardGallery";
 import CardGalleryFullView from "../components/cardGalleryFullView";
 import type { ArtworkInterface } from "../types/artwork";
+import { CardGalleryImageFullView } from "../components/cardGalleryImageFullView";
 
 function Gallery() {
   const [artworks, setArtworks] = useState<ArtworkInterface[]>([]);
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
-    null
+    null,
   );
+  const [imageFullView, setImageFullView] = useState<boolean>(false);
 
   useEffect(() => {
     fetchData();
@@ -66,7 +68,7 @@ function Gallery() {
           method: "PATCH",
           credentials: "include",
           body: updateBookmark,
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Failed to update bookmark");
@@ -76,6 +78,11 @@ function Gallery() {
       console.error("Bookmark update failed:", error);
       throw error;
     }
+  };
+
+  const handleFullViewClose = () => {
+    console.log("CLOSE!");
+    setSelectedArtworkId(null);
   };
 
   const selectedArtwork = artworks.find((aw) => aw.id === selectedArtworkId);
@@ -97,10 +104,17 @@ function Gallery() {
         <div className="gallery-full-view">
           <CardGalleryFullView
             data={selectedArtwork}
-            onClose={() => setSelectedArtworkId(null)}
+            onClose={handleFullViewClose}
             onBookmarkUpdate={handleUpdateBookmark}
+            onImageFullView={() => setImageFullView(false)}
           />
         </div>
+      )}
+      {selectedArtwork && (
+        <CardGalleryImageFullView
+          onImageFullView={imageFullView}
+          data={selectedArtwork}
+        />
       )}
     </div>
   );

@@ -1,4 +1,5 @@
 import "./navigation.css";
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -11,11 +12,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 type NavigationProps = {
-  userEmail: string | null;
+  userId: string | null;
+  onLogout: () => void;
 };
 
-function Navigation({ userEmail }: NavigationProps) {
-  console.log("USER EMAIL ", userEmail);
+function Navigation({ userId, onLogout }: NavigationProps) {
+  useEffect(() => {
+    console.log(userId);
+  }, [userId]);
+
   return (
     <>
       <nav>
@@ -41,12 +46,12 @@ function Navigation({ userEmail }: NavigationProps) {
               <FontAwesomeIcon icon={faBookmark} />
             </a>
 
-            {!userEmail ? (
+            {!userId ? (
               <a href="/login">
                 <FontAwesomeIcon icon={faUser} />
               </a>
             ) : (
-              <a href="/logout">
+              <a href="#" onClick={onLogout}>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} />
               </a>
             )}

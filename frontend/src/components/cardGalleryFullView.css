@@ -35,13 +35,15 @@
 
 .gallery-card-image-full-view {
   width: 100%;
-  border-radius: 0.8rem;
+  height: auto;
+  position: relative;
+  overflow: hidden;
 }
 
 .gallery-card-image-full-view img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
 }
 
 .gallery-card-details-full-view {
