@@ -1,0 +1,49 @@
+.gallery-delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  width: 95%;
+  height: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  background-color: var(--night-gray);
+  color: var(--whitesmoke);
+  box-shadow: 0 10px 20px var(--night-gray-99);
+}
+
+.gallery-delete-modal .btn-group {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+.gallery-delete-modal .btn-group button {
+  outline: none;
+}
+
+@media screen and (min-width: 500px) {
+  .gallery-delete-modal {
+    width: 80%;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .gallery-delete-modal {
+    width: 60%;
+    padding: 3rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .gallery-delete-modal {
+    width: 40%;
+  }
+}

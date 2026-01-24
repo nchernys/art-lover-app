@@ -1,3 +1,5 @@
+import "./deleteModal.css";
+
 type DeleteModalProps = {
   onDeleteModal: (id: string, title: string) => void;
   onDelete: (id: string) => Promise<void>;
