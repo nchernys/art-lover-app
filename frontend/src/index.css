@@ -1,5 +1,8 @@
 :root {
   --dark-gray: rgb(30, 30, 30);
+  --night-gray: rgb(10, 10, 10);
+  --night-gray-30: rgba(10, 10, 10, 0.3);
+  --night-gray-99: rgba(10, 10, 10, 0.99);
   --whitesmoke: whitesmoke;
   --hot-pink: #e400e4;
   --dark-red: #c50000;

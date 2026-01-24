@@ -5,12 +5,21 @@ import CardGalleryFullView from "../components/gallery/cardFullView/cardGalleryF
 import type { ArtworkInterface } from "../types/artwork";
 import { CardGalleryImageFullView } from "../components/gallery/imageFullView/cardGalleryImageFullView";
 
+interface DeleteModalInterface {
+  id: string;
+  title: string;
+}
+
 function Gallery() {
   const [artworks, setArtworks] = useState<ArtworkInterface[]>([]);
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     null,
   );
   const [imageFullView, setImageFullView] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<DeleteModalInterface>({
+    id: "",
+    title: "",
+  });
 
   useEffect(() => {
     fetchData();
@@ -30,6 +39,11 @@ function Gallery() {
     setArtworks(result);
   };
 
+  const handleDeleteModal = (id: string, title: string) => {
+    console.log("DELETE HIT!", id, title);
+    setDeleteModal({ id: id, title: title });
+  };
+
   const handleDelete = async (id: string) => {
     try {
       const response = await fetch(`http://localhost:8080/api/delete/${id}`, {
@@ -45,6 +59,7 @@ function Gallery() {
         throw new Error(errorText || "Failed to delete record");
       }
       fetchData();
+      handleDeleteModal("", "");
     } catch (error) {
       console.error("Delete failed:", error);
       throw error;
@@ -98,7 +113,7 @@ function Gallery() {
           <CardGallery
             key={index}
             data={aw}
-            onDelete={handleDelete}
+            onDelete={() => handleDeleteModal(aw.id, aw.title)}
             onSelect={handleSelect}
             onBookmarkUpdate={handleUpdateBookmark}
           />
@@ -120,6 +135,18 @@ function Gallery() {
           imageFullView={imageFullView}
           data={selectedArtwork}
         />
+      )}
+      {deleteModal.id !== "" && (
+        <div className="gallery-delete-modal">
+          <div>
+            Are you sure you want to delete <i>{deleteModal.title}</i> from your
+            gallery?
+          </div>
+          <div className="btn-group">
+            <button onClick={() => handleDeleteModal("", "")}>Cancel</button>
+            <button onClick={() => handleDelete(deleteModal.id)}>OK</button>
+          </div>
+        </div>
       )}
     </div>
   );

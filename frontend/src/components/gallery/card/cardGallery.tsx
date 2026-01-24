@@ -12,7 +12,7 @@ function CardGallery({
   onBookmarkUpdate,
 }: {
   data: ArtworkInterface;
-  onDelete: (id: string) => Promise<void>;
+  onDelete: (id: string) => void;
   onSelect: (id: string) => void;
   onBookmarkUpdate: (id: string) => Promise<void>;
 }) {
