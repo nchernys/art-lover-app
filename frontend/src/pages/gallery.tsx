@@ -4,6 +4,7 @@ import CardGallery from "../components/gallery/card/cardGallery";
 import CardGalleryFullView from "../components/gallery/cardFullView/cardGalleryFullView";
 import type { ArtworkInterface } from "../types/artwork";
 import { CardGalleryImageFullView } from "../components/gallery/imageFullView/cardGalleryImageFullView";
+import { DeleteModal } from "../components/gallery/modals/deleteModal";
 
 interface DeleteModalInterface {
   id: string;
@@ -137,16 +138,12 @@ function Gallery() {
         />
       )}
       {deleteModal.id !== "" && (
-        <div className="gallery-delete-modal">
-          <div>
-            Are you sure you want to delete <i>{deleteModal.title}</i> from your
-            gallery?
-          </div>
-          <div className="btn-group">
-            <button onClick={() => handleDeleteModal("", "")}>Cancel</button>
-            <button onClick={() => handleDelete(deleteModal.id)}>OK</button>
-          </div>
-        </div>
+        <DeleteModal
+          onDeleteModal={handleDeleteModal}
+          onDelete={handleDelete}
+          title={deleteModal.title}
+          id={deleteModal.id}
+        />
       )}
     </div>
   );
