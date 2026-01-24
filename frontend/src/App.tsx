@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
 import UploadArtwork from "./pages/uploadArtwork";
-import Navigation from "./components/navigation";
+import Navigation from "./components/navigation/navigation";
 import Gallery from "./pages/gallery";
 import GalleryBookmarked from "./pages/galleryBookmarked";
 import SearchByImage from "./pages/searchByImage";

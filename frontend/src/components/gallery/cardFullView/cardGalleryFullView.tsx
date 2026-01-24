@@ -1,9 +1,9 @@
 import "./cardGalleryFullView.css";
-import Bookmark from "./bookmark";
-import type { ArtworkInterface } from "../types/artwork";
+import Bookmark from "../../bookmark/bookmark";
+import type { ArtworkInterface } from "../../../types/artwork";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { CardCornerAction } from "./cardCornerAction";
+import { CardCornerAction } from "../../cardCornerActionButton/cardCornerAction";
 
 function CardGalleryFullView({
   data,

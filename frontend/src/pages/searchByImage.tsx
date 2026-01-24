@@ -3,9 +3,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkSearchResultInterface } from "../types/artworkSearchResult";
-import CardGallerySearchResult from "../components/cardGallerySearchResult";
+import CardGallerySearchResult from "../components/searchByImage/cardGallerySearchResult";
 import type { UploadImageData } from "../types/uploadImageData";
-import { Toast } from "../components/toast";
+import { Toast } from "../components/notifications/toast";
 
 function SearchByImage() {
   const [loading, setLoading] = useState<boolean>(false);

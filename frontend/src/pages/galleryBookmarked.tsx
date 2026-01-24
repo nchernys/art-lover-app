@@ -1,7 +1,7 @@
 import "./gallery.css";
 import { useState, useEffect } from "react";
-import CardGallery from "../components/cardGallery";
-import CardGalleryFullView from "../components/cardGalleryFullView";
+import CardGallery from "../components/gallery/card/cardGallery";
+import CardGalleryFullView from "../components/gallery/cardFullView/cardGalleryFullView";
 import type { ArtworkInterface } from "../types/artwork";
 import { ArtworkInitialState } from "../types/artwork";
 
@@ -26,7 +26,7 @@ function GalleryBookmarked() {
 
     const result = await response.json();
     const bookmarked = result.filter(
-      (aw: ArtworkInterface) => aw.bookmark === true
+      (aw: ArtworkInterface) => aw.bookmark === true,
     );
     setArtworks(bookmarked);
     console.log(bookmarked);
@@ -70,7 +70,7 @@ function GalleryBookmarked() {
           method: "PATCH",
           credentials: "include",
           body: updateBookmark,
-        }
+        },
       );
       if (!response.ok) {
         throw new Error("Failed to update bookmark");

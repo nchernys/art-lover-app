@@ -28,3 +28,6 @@ export function CardCornerAction<T>({
     </div>
   );
 }
+
+// icons: "zoom", "delete"
+// corners: topLeft, topRight, bottomLeft, bottomRight (positions of the icon on a card/image, defined in the CSS file)

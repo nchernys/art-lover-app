@@ -1,0 +1,32 @@
+.card-gallery-image-full-view-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+  background-color: rgba(10, 10, 10, 0.99);
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-gallery-image-full-view-wrapper img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+.card-gallery-image-full-view-close {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 2rem;
+  padding: 0.25rem;
+  color: var(--whitesmoke);
+  opacity: 0.3;
+  box-sizing: border-box;
+  cursor: pointer;
+}

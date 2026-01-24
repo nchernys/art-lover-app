@@ -1,9 +1,9 @@
 import "./gallery.css";
 import { useState, useEffect } from "react";
-import CardGallery from "../components/cardGallery";
-import CardGalleryFullView from "../components/cardGalleryFullView";
+import CardGallery from "../components/gallery/card/cardGallery";
+import CardGalleryFullView from "../components/gallery/cardFullView/cardGalleryFullView";
 import type { ArtworkInterface } from "../types/artwork";
-import { CardGalleryImageFullView } from "../components/cardGalleryImageFullView";
+import { CardGalleryImageFullView } from "../components/gallery/imageFullView/cardGalleryImageFullView";
 
 function Gallery() {
   const [artworks, setArtworks] = useState<ArtworkInterface[]>([]);
@@ -81,8 +81,12 @@ function Gallery() {
   };
 
   const handleFullViewClose = () => {
-    console.log("CLOSE!");
     setSelectedArtworkId(null);
+  };
+
+  const handleImageFullView = () => {
+    console.log("FULL VIEW IMAGE!");
+    setImageFullView(!imageFullView);
   };
 
   const selectedArtwork = artworks.find((aw) => aw.id === selectedArtworkId);
@@ -106,13 +110,14 @@ function Gallery() {
             data={selectedArtwork}
             onClose={handleFullViewClose}
             onBookmarkUpdate={handleUpdateBookmark}
-            onImageFullView={() => setImageFullView(false)}
+            onImageFullView={handleImageFullView}
           />
         </div>
       )}
-      {selectedArtwork && (
+      {selectedArtwork && imageFullView && (
         <CardGalleryImageFullView
-          onImageFullView={imageFullView}
+          onImageFullView={handleImageFullView}
+          imageFullView={imageFullView}
           data={selectedArtwork}
         />
       )}

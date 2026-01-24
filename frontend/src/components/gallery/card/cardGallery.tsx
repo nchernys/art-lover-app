@@ -1,9 +1,9 @@
 import "./cardGallery.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
-import type { ArtworkInterface } from "../types/artwork";
-import Bookmark from "./bookmark";
-import { CardCornerAction } from "./cardCornerAction";
+import type { ArtworkInterface } from "../../../types/artwork";
+import Bookmark from "../../bookmark/bookmark";
+import { CardCornerAction } from "../../cardCornerActionButton/cardCornerAction";
 
 function CardGallery({
   data,
@@ -19,7 +19,12 @@ function CardGallery({
   return (
     <>
       <div className="gallery-card-wrapper">
-        <CardCornerAction onAction={onDelete} payload={data.id} />
+        <CardCornerAction
+          onAction={onDelete}
+          payload={data.id}
+          corner={"topLeft"}
+          icon={"delete"}
+        />
         <Bookmark data={data} onBookmarkUpdate={onBookmarkUpdate} />
 
         <div className="gallery-card-content-wrapper">

@@ -2,8 +2,8 @@ import "./cardGallerySearchResult.css";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import type { ArtworkSearchResultInterface } from "../types/artworkSearchResult";
-import type { UploadImageData } from "../types/uploadImageData";
+import type { ArtworkSearchResultInterface } from "../../types/artworkSearchResult";
+import type { UploadImageData } from "../../types/uploadImageData";
 
 function CardGallerySearchResult({
   data,
