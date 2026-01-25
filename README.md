@@ -45,6 +45,14 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 
 ---
 
+### Artists
+
+| Method | Endpoint       | Description     |
+| ------ | -------------- | --------------- |
+| GET    | `/api/artists` | Get all artists |
+
+---
+
 ### Search and AI
 
 | Method | Endpoint                                | Description                           |

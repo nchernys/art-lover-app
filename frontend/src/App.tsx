@@ -6,7 +6,7 @@ import UploadArtwork from "./pages/uploadArtwork";
 import Navigation from "./components/navigation/navigation";
 import Gallery from "./pages/gallery";
 import GalleryBookmarked from "./pages/galleryBookmarked";
-import SearchByImage from "./pages/searchByImage";
+import SearchByImage from "./pages/recognizeByImage";
 import { Login } from "./pages/login";
 import { Signup } from "./pages/signup";
 import ProtectedRoute from "./security/protectedRoute";

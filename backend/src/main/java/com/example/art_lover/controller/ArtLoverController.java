@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.art_lover.dto.artwork.ArtworkGalleryDisplay;
+import com.example.art_lover.dto.artwork.ArtworkGallerySave;
 import com.example.art_lover.dto.artwork.ArtworkResponse;
 import com.example.art_lover.dto.artwork.ArtworkSearchResult;
 import com.example.art_lover.dto.security.AuthRequest;
 import com.example.art_lover.dto.security.AuthResponse;
 import com.example.art_lover.exceptions.EmailAlreadyExistsException;
 import com.example.art_lover.model.ArtworkModel;
+import com.example.art_lover.model.ArtistModel;
 import com.example.art_lover.model.UserModel;
 import com.example.art_lover.repository.UserRepository;
 import com.example.art_lover.service.ArtworkService;
@@ -56,7 +59,7 @@ public class ArtLoverController {
 
 	@PostMapping(value = "/api/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ArtworkResponse> addArtwork(
-			@ModelAttribute ArtworkModel artwork,
+			@ModelAttribute ArtworkGallerySave artwork,
 			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
 			Authentication authentication) {
 
@@ -68,12 +71,12 @@ public class ArtLoverController {
 	}
 
 	@GetMapping("/api/show/{id}")
-	public ArtworkModel showOne(@PathVariable String id) {
+	public ArtworkGalleryDisplay showOne(@PathVariable String id) {
 		return artworkService.showOne(id);
 	}
 
 	@GetMapping("/api/show")
-	public List<ArtworkModel> show(Authentication authentication) {
+	public List<ArtworkGalleryDisplay> show(Authentication authentication) {
 		String userId = authentication.getName();
 		return artworkService.showAllByUserId(userId);
 	}
@@ -122,6 +125,12 @@ public class ArtLoverController {
 			e.printStackTrace();
 			return Collections.emptyList();
 		}
+	}
+
+	@GetMapping("/api/artists")
+	public List<ArtistModel> getArtists() {
+		List<ArtistModel> artists = artworkService.findAllArtists();
+		return artists;
 	}
 
 	@RestController

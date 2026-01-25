@@ -11,7 +11,6 @@ public class ArtworkModel {
     private String id;
 
     private String title;
-    private String artist;
     private String year;
     private String continent;
     private String country;
@@ -22,17 +21,18 @@ public class ArtworkModel {
     private String imageUrl;
     private String imageKey;
 
+    private String artistId;
     private String userId;
 
     public ArtworkModel() {
         // required for frameworks
     }
 
-    public ArtworkModel(String id, String title, String artist, String year, String continent, String country,
-            Boolean bookmark, String imageUrl, String imageKey, String description, String movement, String userId) {
+    public ArtworkModel(String id, String title, String year, String continent, String country,
+            Boolean bookmark, String imageUrl, String imageKey, String description, String movement, String artistId,
+            String userId) {
         this.id = id;
         this.title = title;
-        this.artist = artist;
         this.year = year;
         this.continent = continent;
         this.country = country;
@@ -41,6 +41,7 @@ public class ArtworkModel {
         this.imageKey = imageKey;
         this.description = description;
         this.movement = movement;
+        this.artistId = artistId;
         this.userId = userId;
     }
 
@@ -50,10 +51,6 @@ public class ArtworkModel {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getArtist() {
-        return artist;
     }
 
     public String getYear() {
@@ -88,6 +85,10 @@ public class ArtworkModel {
         return movement;
     }
 
+    public String getArtistId() {
+        return artistId;
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -98,10 +99,6 @@ public class ArtworkModel {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
     }
 
     public void setYear(String year) {
@@ -134,6 +131,10 @@ public class ArtworkModel {
 
     public void setMovement(String movement) {
         this.movement = movement;
+    }
+
+    public void setArtistId(String artistId) {
+        this.artistId = artistId;
     }
 
     public void setUserId(String userId) {

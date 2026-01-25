@@ -38,6 +38,7 @@ function Gallery() {
 
     const result = await response.json();
     setArtworks(result);
+    console.log("ARTWORKs", artworks);
   };
 
   const handleDeleteModal = (id: string, title: string) => {

@@ -1,5 +1,5 @@
-import "./searchByImage.css";
-import { useState } from "react";
+import "./recognizeByImage.css";
+import { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkSearchResultInterface } from "../types/artworkSearchResult";
@@ -14,6 +14,7 @@ function SearchByImage() {
     image: null,
   });
   const [showToast, setShowToast] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -35,6 +36,10 @@ function SearchByImage() {
     setOptions(result);
   };
 
+  const clearForm = () => {
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   return (
     <div>
       {showToast && <Toast message="Saved successfully!" />}
@@ -43,12 +48,17 @@ function SearchByImage() {
           Want to know more about an artwork, a landmark, or a famous
           photograph? Upload an image!
         </div>
-        <input type="file" name="image" onChange={handleFileUpload} />
+        <input
+          ref={fileInputRef}
+          type="file"
+          name="image"
+          onChange={handleFileUpload}
+        />
       </form>
       <div className="search-image-content">
         {loading ? (
           <div className="loader-group">
-            <div className="searching">Searching . . .</div>
+            <div className="searching">Searching</div>
             <div>
               <FontAwesomeIcon icon={faSpinner} className="loader" />
             </div>
@@ -63,6 +73,7 @@ function SearchByImage() {
                 setShowToast(true);
                 setTimeout(() => {
                   setOptions([]);
+                  clearForm();
                 }, 3000);
               }}
             />

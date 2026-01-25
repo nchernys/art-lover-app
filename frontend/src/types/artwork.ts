@@ -1,6 +1,7 @@
 export interface ArtworkInterface {
   id: string;
   title: string;
+  artistId: string;
   artist: string;
   year: string;
   movement: string;
@@ -17,6 +18,7 @@ export interface ArtworkInterface {
 export const ArtworkInitialState = {
   id: "",
   title: "",
+  artistId: "",
   artist: "",
   year: "",
   continent: "",

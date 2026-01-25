@@ -42,7 +42,9 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select,
+option {
   width: 100%;
   padding: 0.5rem;
   box-sizing: border-box;
@@ -67,8 +69,15 @@ button {
 
 input,
 textarea,
+select,
+option,
 button {
   border-radius: 0.5rem;
   font-family: inherit;
   font-size: inherit;
+}
+
+.required {
+  color: red;
+  margin-left: 0.05rem;
 }

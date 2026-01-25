@@ -47,7 +47,7 @@ function CardGallery({
             )}
           </div>
           <div className="gallery-card-details">
-            <div className="gallery-card-detailes-wrapper">
+            <div className="gallery-card-details-wrapper">
               <div className="gallery-card-title">{data.title}</div>
               <div className="gallery-card-artist">{data.artist}</div>
               <div className="gallery-card-year">{data.year}</div>
