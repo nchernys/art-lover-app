@@ -1,6 +1,6 @@
 import "./login.css";
 import { useState } from "react";
-import type { User } from "../types/user";
+import type { User } from "../../types/user";
 import { useNavigate } from "react-router-dom";
 
 type LoginProps = {

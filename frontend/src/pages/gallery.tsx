@@ -1,5 +1,6 @@
 import "./gallery.css";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import CardGallery from "../components/gallery/card/cardGallery";
 import CardGalleryFullView from "../components/gallery/cardFullView/cardGalleryFullView";
 import type { ArtworkInterface } from "../types/artwork";
@@ -12,6 +13,8 @@ interface DeleteModalInterface {
 }
 
 function Gallery() {
+  const [searchParams] = useSearchParams();
+  const isSearchMode = searchParams.get("search") === "true";
   const [artworks, setArtworks] = useState<ArtworkInterface[]>([]);
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     null,
@@ -21,6 +24,7 @@ function Gallery() {
     id: "",
     title: "",
   });
+  const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     fetchData();
@@ -108,45 +112,69 @@ function Gallery() {
 
   const selectedArtwork = artworks.find((aw) => aw.id === selectedArtworkId);
 
+  const filteredArtworks = artworks.filter(
+    (artwork) =>
+      artwork.title.toLowerCase().includes(query.toLowerCase()) ||
+      artwork.artist.toLowerCase().includes(query.toLowerCase()) ||
+      artwork.description.toLowerCase().includes(query.toLowerCase()) ||
+      artwork.movement.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  const galleryItems =
+    filteredArtworks && filteredArtworks.length > 0
+      ? filteredArtworks
+      : artworks;
+
   return (
-    <div className="wrapper">
-      <div className="gallery-wrapper">
-        {artworks.map((aw, index) => (
-          <CardGallery
-            key={index}
-            data={aw}
-            onDelete={() => handleDeleteModal(aw.id, aw.title)}
-            onSelect={handleSelect}
-            onBookmarkUpdate={handleUpdateBookmark}
-          />
-        ))}
-      </div>
-      {selectedArtwork && (
-        <div className="gallery-full-view">
-          <CardGalleryFullView
-            data={selectedArtwork}
-            onClose={handleFullViewClose}
-            onBookmarkUpdate={handleUpdateBookmark}
-            onImageFullView={handleImageFullView}
-          />
+    <>
+      {isSearchMode && (
+        <input
+          type="text"
+          className="search-artworks"
+          placeholder="Search artworks..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      )}
+      <div className="wrapper">
+        <div className="gallery-wrapper">
+          {galleryItems.map((aw, index) => (
+            <CardGallery
+              key={index}
+              data={aw}
+              onDelete={() => handleDeleteModal(aw.id, aw.title)}
+              onSelect={handleSelect}
+              onBookmarkUpdate={handleUpdateBookmark}
+            />
+          ))}
         </div>
-      )}
-      {selectedArtwork && imageFullView && (
-        <CardGalleryImageFullView
-          onImageFullView={handleImageFullView}
-          imageFullView={imageFullView}
-          data={selectedArtwork}
-        />
-      )}
-      {deleteModal.id !== "" && (
-        <DeleteModal
-          onDeleteModal={handleDeleteModal}
-          onDelete={handleDelete}
-          title={deleteModal.title}
-          id={deleteModal.id}
-        />
-      )}
-    </div>
+        {selectedArtwork && (
+          <div className="gallery-full-view">
+            <CardGalleryFullView
+              data={selectedArtwork}
+              onClose={handleFullViewClose}
+              onBookmarkUpdate={handleUpdateBookmark}
+              onImageFullView={handleImageFullView}
+            />
+          </div>
+        )}
+        {selectedArtwork && imageFullView && (
+          <CardGalleryImageFullView
+            onImageFullView={handleImageFullView}
+            imageFullView={imageFullView}
+            data={selectedArtwork}
+          />
+        )}
+        {deleteModal.id !== "" && (
+          <DeleteModal
+            onDeleteModal={handleDeleteModal}
+            onDelete={handleDelete}
+            title={deleteModal.title}
+            id={deleteModal.id}
+          />
+        )}
+      </div>
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import "./signup.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { User } from "../types/user";
+import type { User } from "../../types/user";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ export function Signup() {
   };
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
     if (passwordMatchError || showPasswordErrorMessage) {

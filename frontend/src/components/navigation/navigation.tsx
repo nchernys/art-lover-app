@@ -1,5 +1,6 @@
 import "./navigation.css";
 import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -28,32 +29,36 @@ function Navigation({ userId, onLogout }: NavigationProps) {
 
         <div className="navIcons">
           <div>
-            <a href="/camera">
+            <NavLink to="/camera">
               <FontAwesomeIcon icon={faCamera} className="navIcon" />
-            </a>
-            <a href="/upload">
+            </NavLink>
+            <NavLink to="/upload">
               <FontAwesomeIcon icon={faPlus} className="navIcon" />
-            </a>
-            <a href="/search">
+            </NavLink>
+            <NavLink to="/?search=true">
               <FontAwesomeIcon icon={faMagnifyingGlass} className="navIcon" />
-            </a>
+            </NavLink>
           </div>
           <div>
-            <a href="/">
+            <NavLink to="/">
               <FontAwesomeIcon icon={faEye} className="navIcon" />
-            </a>
-            <a href="/bookmarked">
+            </NavLink>
+            <NavLink to="/bookmarked">
               <FontAwesomeIcon icon={faBookmark} />
-            </a>
+            </NavLink>
 
             {!userId ? (
-              <a href="/login">
+              <NavLink to="/login">
                 <FontAwesomeIcon icon={faUser} />
-              </a>
+              </NavLink>
             ) : (
-              <a href="#" onClick={onLogout}>
+              <button
+                type="button"
+                onClick={onLogout}
+                className="navIconButton"
+              >
                 <FontAwesomeIcon icon={faArrowRightFromBracket} />
-              </a>
+              </button>
             )}
           </div>
         </div>

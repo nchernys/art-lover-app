@@ -40,8 +40,18 @@ nav {
   color: inherit;
 }
 
+.navIcons .navIconButton {
+  background-color: var(--whitesmoke);
+  color: var(--dark-gray);
+  border: 4px rgb(224, 224, 224) solid;
+  outline: none;
+  padding: 0.25rem;
+  margin: 0;
+}
+
 .navIcons a:hover,
-.navIcons a:active {
+.navIcons a:active,
+.navIcons .navIconButton:hover {
   border: 4px var(--dark-gray) solid;
   color: inherit;
 }

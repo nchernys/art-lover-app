@@ -7,8 +7,8 @@ import Navigation from "./components/navigation/navigation";
 import Gallery from "./pages/gallery";
 import GalleryBookmarked from "./pages/galleryBookmarked";
 import SearchByImage from "./pages/recognizeByImage";
-import { Login } from "./pages/login";
-import { Signup } from "./pages/signup";
+import { Login } from "./pages/auth/login";
+import { Signup } from "./pages/auth/signup";
 import ProtectedRoute from "./security/protectedRoute";
 
 export default function App() {
