@@ -25,30 +25,56 @@
 
 .search-input-group {
   width: 100%;
+  max-width: 290px;
+  height: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
+  background-color: var(--dark-gray);
+  position: relative;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
 }
 
-.search-input-group input {
-  padding: 0.8rem 0.5rem;
+.search-input-group.camera {
+  background-color: transparent;
 }
 
-.search-input-group button {
-  width: 4rem;
+.search-input-group.keywords {
+  padding-right: 3rem;
+}
+
+.search-take-photo-icon {
+  font-size: 2.8rem;
+  cursor: pointer;
 }
 
 .search-image-form input,
 .search-keywords-form input {
-  width: auto;
   background-color: var(--dark-gray);
   color: var(--whitesmoke);
   border: 1px var(--dark-gray) solid;
+  padding: 0 1rem;
 }
 
-.search-image-form input[type="file"] {
-  max-width: 50%;
+.search-image-form input:focus,
+.search-keywords-form input:focus {
+  outline: none;
+}
+
+.search-input-group button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 100%;
+  padding: 0.25rem;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  color: var(--whitesmoke);
+  font-size: 1.5rem;
 }
 
 .search-image-content {

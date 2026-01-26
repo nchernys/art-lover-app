@@ -5,7 +5,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import UploadArtwork from "./pages/addNewArtwork/addArtworkManually";
 import Navigation from "./components/navigation/navigation";
 import Gallery from "./pages/gallery/gallery";
-import SearchByImage from "./pages/addNewArtwork/findNewAndSaveToGallery";
+import SearchByImage from "./pages/addNewArtwork/addArtworkWithAi";
 import { Login } from "./pages/auth/login";
 import { Signup } from "./pages/auth/signup";
 import ProtectedRoute from "./security/protectedRoute";

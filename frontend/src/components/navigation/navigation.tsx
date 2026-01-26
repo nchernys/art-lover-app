@@ -1,6 +1,6 @@
 import "./navigation.css";
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -18,10 +18,17 @@ type NavigationProps = {
 };
 
 function Navigation({ userId, onLogout }: NavigationProps) {
+  const location = useLocation();
+
   useEffect(() => {
     console.log(userId);
   }, [userId]);
 
+  const isCamera = location.pathname === "/camera";
+  const isUpload = location.pathname === "/upload";
+  const isSearch = location.search === "?search=true";
+  const isBookmarked = location.search === "?bookmarked=true";
+  const isGallery = location.pathname === "/" && location.search === "";
   return (
     <>
       <nav>
@@ -29,28 +36,31 @@ function Navigation({ userId, onLogout }: NavigationProps) {
 
         <div className="navIcons">
           <div>
-            <NavLink to="/camera">
+            <Link to="/camera" className={isCamera ? "active" : ""}>
               <FontAwesomeIcon icon={faCamera} className="navIcon" />
-            </NavLink>
-            <NavLink to="/upload">
+            </Link>
+            <Link to="/upload" className={isUpload ? "active" : ""}>
               <FontAwesomeIcon icon={faPlus} className="navIcon" />
-            </NavLink>
-            <NavLink to="/?search=true">
+            </Link>
+            <Link to="/?search=true" className={isSearch ? "active" : ""}>
               <FontAwesomeIcon icon={faMagnifyingGlass} className="navIcon" />
-            </NavLink>
+            </Link>
           </div>
           <div>
-            <NavLink to="/">
+            <Link to="/" className={isGallery ? "active" : ""}>
               <FontAwesomeIcon icon={faEye} className="navIcon" />
-            </NavLink>
-            <NavLink to="/?bookmarked=true">
+            </Link>
+            <Link
+              to="/?bookmarked=true"
+              className={isBookmarked ? "active" : ""}
+            >
               <FontAwesomeIcon icon={faBookmark} />
-            </NavLink>
+            </Link>
 
             {!userId ? (
-              <NavLink to="/login">
+              <Link to="/login">
                 <FontAwesomeIcon icon={faUser} />
-              </NavLink>
+              </Link>
             ) : (
               <button
                 type="button"

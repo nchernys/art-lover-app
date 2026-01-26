@@ -1,7 +1,11 @@
-import "./findNewAndSaveToGallery.css";
+import "./addArtworkWithAi.css";
 import { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faCamera,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkSearchResultInterface } from "../../types/artworkSearchResult";
 import CardGallerySearchResult from "../../components/searchByImage/cardGallerySearchResult";
 import type { UploadImageData } from "../../types/uploadImageData";
@@ -20,6 +24,7 @@ function SearchByImage() {
   const [showToast, setShowToast] = useState<boolean>(false);
   const [keywords, setKeywords] = useState<Keywords>({ keywords: "" });
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -92,16 +97,38 @@ function SearchByImage() {
             Want to know more about an artwork, a landmark, or a famous
             photograph? Upload an image!
           </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            name="image"
-            onChange={handleFileUpload}
-          />
+          <div className="search-input-group">
+            <input
+              ref={fileInputRef}
+              type="file"
+              name="image"
+              onChange={handleFileUpload}
+            />
+          </div>
+        </form>
+        <form className="search-image-form">
+          <div className="search-header">Take a photo:</div>
+          <div className="search-input-group camera">
+            <div onClick={() => cameraInputRef.current?.click()}>
+              <FontAwesomeIcon
+                icon={faCamera}
+                className="search-take-photo-icon"
+              />
+              <input
+                ref={cameraInputRef}
+                type="file"
+                name="image"
+                accept="image/*"
+                capture="environment"
+                style={{ display: "none" }}
+                onChange={handleFileUpload}
+              />
+            </div>
+          </div>
         </form>
         <form className="search-keywords-form" onSubmit={handleSubmitKeywords}>
           <div className="search-header">Or use keywords:</div>
-          <div className="search-input-group">
+          <div className="search-input-group keywords">
             <input
               ref={fileInputRef}
               type="text"
@@ -110,7 +137,9 @@ function SearchByImage() {
               onChange={handleChangeKeywords}
               required
             />
-            <input type="submit" value="Submit" />
+            <button>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
           </div>
         </form>
       </div>

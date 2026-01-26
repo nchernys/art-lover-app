@@ -56,6 +56,10 @@ nav {
   color: inherit;
 }
 
+.navIcons a.active {
+  border: 4px var(--dark-gray) solid;
+}
+
 .navIcons a:visited {
   color: inherit;
 }
