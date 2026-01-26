@@ -85,33 +85,3 @@
   gap: 2rem;
   position: relative;
 }
-
-.search-image-content .loader-group {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem 0;
-  z-index: 9999;
-}
-
-.search-image-content .loader {
-  font-size: 2.5rem;
-  transform-origin: center;
-  animation: spin infinite 2s linear;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  0% {
-    transform: rotate(360deg);
-  }
-}

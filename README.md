@@ -65,16 +65,18 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 
 ## Recent Updates
 
-- **Gemini AI–Powered Search**: Find artworks by uploading an image or searching with keywords.
+- **Gemini AI–Powered Search**: Finds artworks by uploading an image or searching with keywords.
+- **Camera Snapshot Upload**: Allows users to capture and upload artwork images directly from the camera on mobile devices.
+- **Filter out non-image media**: Excludes non-bitmap Wikimedia Commons files (e.g., PDF, DJVU) by filtering on mediatype=BITMAP and image/\* MIME types.
 - **Face-Focused Image Preview**: Automatically centers detected faces in gallery preview images to improve visual framing (powered by Gemini image recognition for face and bounding box detection).
 - **Full-Screen Image Viewer**: Provides an expanded viewing experience in an immersive, distraction-free full-screen mode.
 
 ## Future Improvements
 
 - **Native Mobile Apps**: iOS and Android applications to enable on-the-spot artwork exploration in museums.
-- **Camera Snapshot Upload**: Allow users to capture and upload artwork images directly from the device camera.
 - **Learn More Enhancements**: Expand and enrich detailed content for artworks, artists, movements, and periods.
 - **Fun Facts Feature**: Provide random, engaging facts related to an artwork.
+- **Authorization & Authentication**: Add email-based OTP verification during user sign-up to validate user identity.
 
 ## Screenshots
 

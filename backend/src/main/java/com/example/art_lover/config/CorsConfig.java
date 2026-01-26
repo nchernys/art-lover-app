@@ -9,9 +9,11 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")              // only API endpoints
-                .allowedOrigins("http://localhost:5173") // React dev server
+        registry.addMapping("/api/**") // only API endpoints
+                .allowedOrigins("http://localhost:5173",
+                        "https://47d073c62107.ngrok-free.app") // React dev server
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

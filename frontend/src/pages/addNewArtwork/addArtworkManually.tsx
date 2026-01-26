@@ -84,7 +84,7 @@ function UploadArtwork() {
     data.append("description", formData.description);
     data.append("imageFile", formData.image);
 
-    const response = await fetch("http://localhost:8080/api/save", {
+    const response = await fetch("/api/save", {
       method: "POST",
       credentials: "include",
       body: data,
@@ -138,10 +138,11 @@ function UploadArtwork() {
           <select
             name="artistId"
             value={formData.artistId}
+            defaultValue=""
             onChange={handleChange}
             required
           >
-            <option value="" disabled selected>
+            <option value="" disabled>
               Select an artist:
             </option>
             {artists &&

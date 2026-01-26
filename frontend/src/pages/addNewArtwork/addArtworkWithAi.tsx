@@ -1,15 +1,19 @@
 import "./addArtworkWithAi.css";
 import { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSpinner,
-  faCamera,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkSearchResultInterface } from "../../types/artworkSearchResult";
 import CardGallerySearchResult from "../../components/searchByImage/cardGallerySearchResult";
 import type { UploadImageData } from "../../types/uploadImageData";
 import { Toast } from "../../components/notifications/toast";
+import { Loader } from "../../components/notifications/loader";
+
+function isMobileDevice(): boolean {
+  return (
+    typeof navigator !== "undefined" &&
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+  );
+}
 
 interface Keywords {
   keywords: string;
@@ -34,7 +38,7 @@ function SearchByImage() {
     setImageUploaded({ image: file });
     const data = new FormData();
     data.append("image", file);
-    const response = await fetch(`http://localhost:8080/api/recognize`, {
+    const response = await fetch(`/api/recognize`, {
       method: "POST",
       credentials: "include",
       body: data,
@@ -72,14 +76,11 @@ function SearchByImage() {
     setLoading(true);
     const data = new FormData();
     data.append("keywords", keywords.keywords);
-    const response = await fetch(
-      `http://localhost:8080/api/recognize-keywords`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: data,
-      },
-    );
+    const response = await fetch(`/api/recognize-keywords`, {
+      method: "POST",
+      credentials: "include",
+      body: data,
+    });
     if (!response.ok) throw new Error("Failed to recognize the image.");
 
     const result = await response.json();
@@ -87,6 +88,8 @@ function SearchByImage() {
     setOptions(result);
     console.log("RESULT", result);
   };
+
+  const isMobile = isMobileDevice();
 
   return (
     <>
@@ -106,26 +109,29 @@ function SearchByImage() {
             />
           </div>
         </form>
-        <form className="search-image-form">
-          <div className="search-header">Take a photo:</div>
-          <div className="search-input-group camera">
-            <div onClick={() => cameraInputRef.current?.click()}>
-              <FontAwesomeIcon
-                icon={faCamera}
-                className="search-take-photo-icon"
-              />
-              <input
-                ref={cameraInputRef}
-                type="file"
-                name="image"
-                accept="image/*"
-                capture="environment"
-                style={{ display: "none" }}
-                onChange={handleFileUpload}
-              />
+        {isMobile && (
+          <form className="search-image-form">
+            <div className="search-header">Take a photo:</div>
+            <div className="search-input-group camera">
+              <div onClick={() => cameraInputRef.current?.click()}>
+                <FontAwesomeIcon
+                  icon={faCamera}
+                  className="search-take-photo-icon"
+                />
+                <input
+                  ref={cameraInputRef}
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  capture="environment"
+                  style={{ display: "none" }}
+                  onChange={handleFileUpload}
+                />
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        )}
+
         <form className="search-keywords-form" onSubmit={handleSubmitKeywords}>
           <div className="search-header">Or use keywords:</div>
           <div className="search-input-group keywords">
@@ -144,11 +150,7 @@ function SearchByImage() {
         </form>
       </div>
       <div className="search-image-content">
-        {loading && (
-          <div className="loader-group">
-            <FontAwesomeIcon icon={faSpinner} className="loader" />
-          </div>
-        )}
+        {loading && <Loader />}
         {options.length >= 1 &&
           options.map((op, index) => (
             <CardGallerySearchResult

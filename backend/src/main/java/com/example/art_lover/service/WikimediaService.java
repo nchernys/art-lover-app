@@ -93,11 +93,20 @@ public class WikimediaService {
 
             JsonNode info = imageInfo.get(0);
 
-            String image = info.path("url").asText();
+            String fileMime = info.path("mime").asText("");
+            String fileMediaType = info.path("mediatype").asText("");
+            String fileUrl = info.path("url").asText("");
 
-            images.add(image);
+            if (!"BITMAP".equals(fileMediaType)) {
+                continue;
+            }
 
-            System.out.println("Image: " + image);
+            if (!fileMime.startsWith("image/")) {
+                continue;
+            }
+
+            images.add(fileUrl);
+            System.out.println("Image: " + fileUrl);
         }
 
         return images;

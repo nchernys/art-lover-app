@@ -1,5 +1,4 @@
 import "./navigation.css";
-import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,15 +19,12 @@ type NavigationProps = {
 function Navigation({ userId, onLogout }: NavigationProps) {
   const location = useLocation();
 
-  useEffect(() => {
-    console.log(userId);
-  }, [userId]);
-
   const isCamera = location.pathname === "/camera";
   const isUpload = location.pathname === "/upload";
   const isSearch = location.search === "?search=true";
   const isBookmarked = location.search === "?bookmarked=true";
   const isGallery = location.pathname === "/" && location.search === "";
+
   return (
     <>
       <nav>

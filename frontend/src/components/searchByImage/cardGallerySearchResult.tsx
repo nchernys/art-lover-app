@@ -60,7 +60,7 @@ function CardGallerySearchResult({
       newData.append("imageUrl", imageSelected);
     }
 
-    const response = await fetch("http://localhost:8080/api/save", {
+    const response = await fetch("/api/save", {
       method: "POST",
       credentials: "include",
       body: newData,

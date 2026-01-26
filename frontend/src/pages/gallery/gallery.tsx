@@ -41,7 +41,7 @@ function Gallery() {
   }, [isBookmarkMode]);
 
   const fetchData = async () => {
-    const response = await fetch("http://localhost:8080/api/show", {
+    const response = await fetch("/api/show", {
       method: "GET",
       credentials: "include",
     });
@@ -61,7 +61,7 @@ function Gallery() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/delete/${id}`, {
+      const response = await fetch(`/api/delete/${id}`, {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -92,14 +92,11 @@ function Gallery() {
     const updateBookmark = new FormData();
     updateBookmark.append("bookmark", `${!artwork.bookmark}`);
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/update/bookmark/${id}`,
-        {
-          method: "PATCH",
-          credentials: "include",
-          body: updateBookmark,
-        },
-      );
+      const response = await fetch(`/api/update/bookmark/${id}`, {
+        method: "PATCH",
+        credentials: "include",
+        body: updateBookmark,
+      });
       if (!response.ok) {
         throw new Error("Failed to update bookmark");
       }

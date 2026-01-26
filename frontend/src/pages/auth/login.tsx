@@ -29,17 +29,14 @@ export function Login({ onLogin }: LoginProps) {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-    const response: Response = await fetch(
-      "http://localhost:8080/api/auth/login",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userCreds),
+    const response: Response = await fetch("/api/auth/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(userCreds),
+    });
     if (!response.ok) {
       throw new Error("Login failed");
     }

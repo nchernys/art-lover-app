@@ -172,7 +172,7 @@ public class GeminiAIImageRecognitionService {
 
         // prompts
         private static final String IMAGE_PROMPT = """
-                        You are an expert in art history, architecture, and visual culture.
+                        You are an expert in art history.
 
                         Task:
                         Analyze the image and identify ALL real, catalogued art subjects that apply.
@@ -204,7 +204,7 @@ public class GeminiAIImageRecognitionService {
 
                         Rules:
                         - If unknown, use "Unknown"
-                        - Keywords: up to 3 distinctive words including artist and title, no commas, no filler words (e.g. gogh starry mona lisa rembrandt repin)
+                        - Keywords: up to 3 distinctive words including artist and title, no art movement, no commas, no filler words (e.g. gogh starry mona lisa rembrandt repin)
                         - Do NOT include explanations
                         - Do NOT reinterpret casual photos as artworks
                         - If a real building or structure is shown, return it
@@ -214,13 +214,13 @@ public class GeminiAIImageRecognitionService {
                         """;
 
         private static final String KEYWORD_PROMPT = """
-                        You are an expert in art history, architecture, and visual culture.
+                        You are an expert in art history.
 
                         Task:
                         Based on keywords, identify ALL real, catalogued artworks that apply.
 
                         A valid subject:
-                        - Exists as a named artwork, structure, or photograph
+                        - Exists as a named artwork, structure, or photograph as art
                         - Is documented in reliable sources (museums, galleries, wikipedia)
 
                         Propose 2–3 possible options.
@@ -244,9 +244,19 @@ public class GeminiAIImageRecognitionService {
 
                         Rules:
                         - If unknown, use "Unknown"
-                        - Normalize keywords
-                        - Keywords: up to 3 distinctive words including artist and title, no commas, no filler words (e.g. gogh starry mona lisa rembrandt repin)
                         - Do NOT include explanations
+
+                        Keyword rules:
+                        - EXACTLY three lowercase words
+                        - words must be space-delimited (never concatenate words)
+                        - each word must be a real standalone word
+                        - must uniquely identify both the artist and the artwork
+                        - optimized for Wikimedia Commons / museum image search
+                        - prioritize the most distinctive title words
+                        - include the artist’s last name
+                        - do NOT include art movement
+                        - do NOT use filler words unless they are required for disambiguation
+                        - do NOT merge or compress multiple title words into one token
 
                         Return ONLY raw JSON.
                         Do NOT use markdown.

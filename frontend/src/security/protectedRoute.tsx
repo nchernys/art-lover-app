@@ -11,12 +11,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/auth/me", {
+        const res = await fetch("/api/auth/me", {
           method: "GET",
           credentials: "include",
         });
-
-        console.log("RES OK? ", res.ok);
         setAllowed(res.ok);
       } catch {
         setAllowed(false);
