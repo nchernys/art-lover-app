@@ -12,6 +12,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 @Service
@@ -29,44 +30,33 @@ public class R2ImageService {
         this.s3Client = s3Client;
     }
 
-    public R2ImageUploadResponse uploadImage(MultipartFile file) {
+    public R2ImageUploadResponse uploadImage(
+            InputStream inputStream,
+            long size,
+            String key,
+            String contentType) {
+
         try {
 
-            String originalFilename = file.getOriginalFilename();
-            String extension = "";
-
-            if (originalFilename != null) {
-                int dotIndex = originalFilename.lastIndexOf(".");
-                if (dotIndex != -1) {
-                    extension = originalFilename.substring(dotIndex).toLowerCase();
-                }
-            }
-
-            if (!extension.matches("\\.(png|jpg|jpeg|gif|webp|heic)")) {
-                throw new IllegalArgumentException("Unsupported file type");
-            }
-
-            String key = UUID.randomUUID() + extension;
-
-            System.out.println("EXTENSION ____________________ " + extension);
+            // build R2 request
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
-                    .contentType(file.getContentType())
+                    .contentType(contentType)
+                    .contentLength(size)
                     .build();
 
+            // upload to R2
             s3Client.putObject(
                     request,
-                    RequestBody.fromInputStream(
-                            file.getInputStream(),
-                            file.getSize()));
+                    RequestBody.fromInputStream(inputStream, size));
 
-            // Public Cloudflare R2 URL
+            // build public URL
             String url = "https://" + bucket + "." + accountId + ".r2.dev/" + key;
 
             return new R2ImageUploadResponse(url, key);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Failed to upload image to Cloudflare R2", e);
         }
     }

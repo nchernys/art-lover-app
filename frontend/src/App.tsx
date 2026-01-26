@@ -2,11 +2,10 @@ import "./index.css";
 import { useState, useEffect } from "react";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
-import UploadArtwork from "./pages/uploadArtwork";
+import UploadArtwork from "./pages/addNewArtwork/addArtworkManually";
 import Navigation from "./components/navigation/navigation";
-import Gallery from "./pages/gallery";
-import GalleryBookmarked from "./pages/galleryBookmarked";
-import SearchByImage from "./pages/recognizeByImage";
+import Gallery from "./pages/gallery/gallery";
+import SearchByImage from "./pages/addNewArtwork/findNewAndSaveToGallery";
 import { Login } from "./pages/auth/login";
 import { Signup } from "./pages/auth/signup";
 import ProtectedRoute from "./security/protectedRoute";
@@ -68,14 +67,6 @@ export default function App() {
           element={
             <ProtectedRoute>
               <UploadArtwork />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/bookmarked"
-          element={
-            <ProtectedRoute>
-              <GalleryBookmarked />
             </ProtectedRoute>
           }
         />

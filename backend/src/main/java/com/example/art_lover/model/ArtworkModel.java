@@ -21,6 +21,8 @@ public class ArtworkModel {
     private String imageUrl;
     private String imageKey;
 
+    private String previewKey;
+
     private String artistId;
     private String userId;
 
@@ -29,7 +31,8 @@ public class ArtworkModel {
     }
 
     public ArtworkModel(String id, String title, String year, String continent, String country,
-            Boolean bookmark, String imageUrl, String imageKey, String description, String movement, String artistId,
+            Boolean bookmark, String imageUrl, String imageKey, String previewKey, String description, String movement,
+            String artistId,
             String userId) {
         this.id = id;
         this.title = title;
@@ -39,6 +42,7 @@ public class ArtworkModel {
         this.bookmark = bookmark;
         this.imageUrl = imageUrl;
         this.imageKey = imageKey;
+        this.previewKey = previewKey;
         this.description = description;
         this.movement = movement;
         this.artistId = artistId;
@@ -75,6 +79,10 @@ public class ArtworkModel {
 
     public String getImageKey() {
         return imageKey;
+    }
+
+    public String getPreviewKey() {
+        return previewKey;
     }
 
     public String getDescription() {
@@ -123,6 +131,10 @@ public class ArtworkModel {
 
     public void setImageKey(String imageKey) {
         this.imageKey = imageKey;
+    }
+
+    public void setPreviewKey(String previewKey) {
+        this.previewKey = previewKey;
     }
 
     public void setDescription(String description) {

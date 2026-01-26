@@ -1,6 +1,7 @@
 package com.example.art_lover.dto.artwork;
 
 import java.util.List;
+import com.example.art_lover.dto.artwork.ArtworkBoxBounds;
 
 public record ArtworkSearchResult(
         String title,
@@ -9,7 +10,9 @@ public record ArtworkSearchResult(
         String movement,
         List<String> imageUrls,
         String description,
-        String keywords) {
+        String keywords,
+        Boolean bookmark,
+        ArtworkBoxBounds box) {
     public ArtworkSearchResult withImageUrls(List<String> newImageUrls) {
 
         if (newImageUrls == null || newImageUrls.isEmpty()) {
@@ -23,6 +26,8 @@ public record ArtworkSearchResult(
                 movement,
                 newImageUrls,
                 description,
-                keywords);
+                keywords,
+                bookmark,
+                box);
     }
 }

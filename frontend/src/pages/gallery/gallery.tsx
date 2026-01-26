@@ -1,11 +1,14 @@
 import "./gallery.css";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import CardGallery from "../components/gallery/card/cardGallery";
-import CardGalleryFullView from "../components/gallery/cardFullView/cardGalleryFullView";
-import type { ArtworkInterface } from "../types/artwork";
-import { CardGalleryImageFullView } from "../components/gallery/imageFullView/cardGalleryImageFullView";
-import { DeleteModal } from "../components/gallery/modals/deleteModal";
+import CardGallery from "../../components/gallery/card/cardGallery";
+import CardGalleryFullView from "../../components/gallery/cardFullView/cardGalleryFullView";
+import type { ArtworkInterface } from "../../types/artwork";
+import { CardGalleryImageFullView } from "../../components/gallery/imageFullView/cardGalleryImageFullView";
+import { DeleteModal } from "../../components/gallery/modals/deleteModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 interface DeleteModalInterface {
   id: string;
@@ -15,6 +18,7 @@ interface DeleteModalInterface {
 function Gallery() {
   const [searchParams] = useSearchParams();
   const isSearchMode = searchParams.get("search") === "true";
+  const isBookmarkMode = searchParams.get("bookmarked") === "true";
   const [artworks, setArtworks] = useState<ArtworkInterface[]>([]);
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     null,
@@ -30,6 +34,12 @@ function Gallery() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (isBookmarkMode) {
+      setQuery("");
+    }
+  }, [isBookmarkMode]);
+
   const fetchData = async () => {
     const response = await fetch("http://localhost:8080/api/show", {
       method: "GET",
@@ -42,11 +52,10 @@ function Gallery() {
 
     const result = await response.json();
     setArtworks(result);
-    console.log("ARTWORKs", artworks);
+    console.log("ARTWORKS", result);
   };
 
   const handleDeleteModal = (id: string, title: string) => {
-    console.log("DELETE HIT!", id, title);
     setDeleteModal({ id: id, title: title });
   };
 
@@ -106,7 +115,6 @@ function Gallery() {
   };
 
   const handleImageFullView = () => {
-    console.log("FULL VIEW IMAGE!");
     setImageFullView(!imageFullView);
   };
 
@@ -120,8 +128,13 @@ function Gallery() {
       artwork.movement.toLowerCase().includes(query.toLowerCase()),
   );
 
-  const galleryItems =
-    filteredArtworks && filteredArtworks.length > 0
+  const bookmarkedArtworks = artworks.filter(
+    (artwork) => artwork.bookmark === true,
+  );
+
+  const galleryItems = isBookmarkMode
+    ? bookmarkedArtworks
+    : isSearchMode && query
       ? filteredArtworks
       : artworks;
 
@@ -137,16 +150,27 @@ function Gallery() {
         />
       )}
       <div className="wrapper">
+        {galleryItems.length < 1 && (
+          <div className="empty-message">
+            Your gallery doesn’t have any artworks yet. <br />
+            Click{" "}
+            <NavLink to="/camera">
+              <FontAwesomeIcon icon={faCamera} className="find-art-icon" />
+            </NavLink>
+            to get started!
+          </div>
+        )}
         <div className="gallery-wrapper">
-          {galleryItems.map((aw, index) => (
-            <CardGallery
-              key={index}
-              data={aw}
-              onDelete={() => handleDeleteModal(aw.id, aw.title)}
-              onSelect={handleSelect}
-              onBookmarkUpdate={handleUpdateBookmark}
-            />
-          ))}
+          {galleryItems.length >= 1 &&
+            galleryItems.map((aw, index) => (
+              <CardGallery
+                key={index}
+                data={aw}
+                onDelete={() => handleDeleteModal(aw.id, aw.title)}
+                onSelect={handleSelect}
+                onBookmarkUpdate={handleUpdateBookmark}
+              />
+            ))}
         </div>
         {selectedArtwork && (
           <div className="gallery-full-view">

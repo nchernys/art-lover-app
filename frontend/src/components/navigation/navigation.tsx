@@ -43,7 +43,7 @@ function Navigation({ userId, onLogout }: NavigationProps) {
             <NavLink to="/">
               <FontAwesomeIcon icon={faEye} className="navIcon" />
             </NavLink>
-            <NavLink to="/bookmarked">
+            <NavLink to="/?bookmarked=true">
               <FontAwesomeIcon icon={faBookmark} />
             </NavLink>
 

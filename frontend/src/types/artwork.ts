@@ -10,6 +10,7 @@ export interface ArtworkInterface {
   description: string;
   imageKey: string;
   imageUrl: string;
+  previewKey: string
   bookmark: boolean;
   image: File | null;
   userId: string;
@@ -29,5 +30,6 @@ export const ArtworkInitialState = {
   image: null,
   imageUrl: "",
   imageKey: "",
+  previewKey: "",
   userId: "",
 };

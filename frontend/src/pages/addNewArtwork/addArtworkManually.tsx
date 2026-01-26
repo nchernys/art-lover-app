@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import type { ArtworkInterface } from "../types/artwork";
-import { ArtworkInitialState } from "../types/artwork";
+import type { ArtworkInterface } from "../../types/artwork";
+import { ArtworkInitialState } from "../../types/artwork";
 
 interface Artist {
   id: string;
@@ -84,7 +84,7 @@ function UploadArtwork() {
     data.append("description", formData.description);
     data.append("imageFile", formData.image);
 
-    const response = await fetch("http://localhost:8080/api/add", {
+    const response = await fetch("http://localhost:8080/api/save", {
       method: "POST",
       credentials: "include",
       body: data,

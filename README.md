@@ -36,7 +36,7 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 
 | Method | Endpoint                    | Description                                        |
 | ------ | --------------------------- | -------------------------------------------------- |
-| POST   | `/api/add`                  | Add a new artwork (multipart form, optional image) |
+| POST   | `/api/save`                 | Add a new artwork (multipart form, optional image) |
 | GET    | `/api/show`                 | Get all artworks for authenticated user            |
 | GET    | `/api/show/{id}`            | Get a single artwork by ID                         |
 | PATCH  | `/api/update/{id}`          | Update artwork details and image                   |
@@ -57,11 +57,17 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 
 | Method | Endpoint                                | Description                           |
 | ------ | --------------------------------------- | ------------------------------------- |
-| GET    | `/api/search?keyword=`                  | Search artworks by keyword            |
 | GET    | `/api/generate-description?userPrompt=` | Generate AI artwork description       |
 | POST   | `/api/recognize`                        | Recognize artwork from uploaded image |
+| POST   | `/api/recognize-keywords`               | Recognize artwork from user keywords  |
 
 ---
+
+## Recent Updates
+
+- **Gemini AI–Powered Search**: Find artworks by uploading an image or searching with keywords.
+- **Face-Focused Image Preview**: Automatically centers detected faces in gallery preview images to improve visual framing (powered by Gemini image recognition for face and bounding box detection).
+- **Full-Screen Image Viewer**: Provides an expanded viewing experience in an immersive, distraction-free full-screen mode.
 
 ## Future Improvements
 
@@ -69,7 +75,6 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Camera Snapshot Upload**: Allow users to capture and upload artwork images directly from the device camera.
 - **Learn More Enhancements**: Expand and enrich detailed content for artworks, artists, movements, and periods.
 - **Fun Facts Feature**: Provide random, engaging facts related to an artwork.
-- **Face-Focused Image Preview**: Automatically center detected faces in gallery preview images to improve visual framing.
 
 ## Screenshots
 

@@ -8,5 +8,7 @@ public record ArtworkGalleryDisplay(
                 String movement,
                 String imageUrl,
                 String imageKey,
+                String previewKey,
+                Boolean bookmark,
                 String description) {
 }

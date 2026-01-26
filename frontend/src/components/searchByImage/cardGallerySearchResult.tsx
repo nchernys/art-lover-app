@@ -9,19 +9,21 @@ function CardGallerySearchResult({
   data,
   imageUploaded,
   onSuccess,
+  setLoading,
 }: {
   data: ArtworkSearchResultInterface;
-  imageUploaded: UploadImageData;
+  imageUploaded: UploadImageData | null;
   onSuccess: () => void;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [imageSelected, setImageSelected] = useState<string>("");
-  const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
+  const [imageSrc, setImageSrc] = useState<string>("");
 
   useEffect(() => {
     let canceled = false;
-    let url: string | undefined;
+    let url: string;
 
-    if (imageUploaded.image instanceof File) {
+    if (imageUploaded && imageUploaded.image instanceof File) {
       url = URL.createObjectURL(imageUploaded.image);
       Promise.resolve().then(() => {
         if (!canceled) setImageSrc(url);
@@ -32,13 +34,13 @@ function CardGallerySearchResult({
       };
     } else {
       Promise.resolve().then(() => {
-        if (!canceled) setImageSrc(undefined);
+        if (!canceled) setImageSrc("");
       });
     }
-  }, [imageUploaded.image]);
+  }, [imageUploaded]);
 
   const handleSubmit = async () => {
-    if (!imageUploaded.image) return;
+    setLoading(true);
     const newData = new FormData();
     newData.append("title", data.title);
     newData.append("artist", data.artist);
@@ -47,13 +49,18 @@ function CardGallerySearchResult({
     newData.append("country", data.country);
     newData.append("movement", data.movement);
     newData.append("description", data.description);
-    if (imageSelected.includes("blob")) {
+    newData.append("box", JSON.stringify(data.box));
+    if (
+      imageUploaded &&
+      imageUploaded.image &&
+      imageSelected.includes("blob")
+    ) {
       newData.append("imageFile", imageUploaded.image);
     } else {
       newData.append("imageUrl", imageSelected);
     }
 
-    const response = await fetch("http://localhost:8080/api/add", {
+    const response = await fetch("http://localhost:8080/api/save", {
       method: "POST",
       credentials: "include",
       body: newData,
@@ -61,10 +68,9 @@ function CardGallerySearchResult({
     if (!response.ok) {
       throw new Error("Upload failed");
     }
+    setLoading(false);
     onSuccess();
   };
-
-  if (!imageSrc) return;
 
   return (
     <>
@@ -76,30 +82,28 @@ function CardGallerySearchResult({
 
         <div className="search-gallery-card-content-wrapper">
           <div className="search-gallery-card-images">
-            <div
-              className="search-gallary-card-image-wrapper"
-              style={{
-                border:
-                  imageSrc === imageSelected
-                    ? "#E80C8F 8px solid"
-                    : "transparent 8px solid",
-              }}
-              onClick={() => (
-                setImageSelected(imageSrc),
-                console.log(imageSrc)
-              )}
-            >
-              <img
-                src={imageSrc}
-                alt="image"
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
-                width={300}
-                height={300}
-              />
-            </div>
-
+            {imageSrc !== "" && (
+              <div
+                className="search-gallary-card-image-wrapper"
+                style={{
+                  border:
+                    imageSrc === imageSelected
+                      ? "#E80C8F 8px solid"
+                      : "transparent 8px solid",
+                }}
+                onClick={() => setImageSelected(imageSrc)}
+              >
+                <img
+                  src={imageSrc}
+                  alt="image"
+                  loading="lazy"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                  width={300}
+                  height={300}
+                />
+              </div>
+            )}
             {data.imageUrls &&
               data.imageUrls.map((item, index) => (
                 <div

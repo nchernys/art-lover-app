@@ -3,6 +3,7 @@ package com.example.art_lover.controller;
 import java.util.List;
 import java.util.Collections;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
@@ -31,7 +32,7 @@ import com.example.art_lover.model.UserModel;
 import com.example.art_lover.repository.UserRepository;
 import com.example.art_lover.service.ArtworkService;
 import com.example.art_lover.service.GeminiAIDescriptionService;
-import com.example.art_lover.service.GeminiAILImageRecognitionService;
+import com.example.art_lover.service.GeminiAIImageRecognitionService;
 import com.example.art_lover.service.JWTService;
 
 import org.springframework.security.core.Authentication;
@@ -47,24 +48,31 @@ public class ArtLoverController {
 
 	private final ArtworkService artworkService;
 	private final GeminiAIDescriptionService aiDescriptionService;
-	private final GeminiAILImageRecognitionService aiImageRecognitionService;
+	private final GeminiAIImageRecognitionService geminiAiImageRecognitionService;
 
 	// constructor
 	public ArtLoverController(ArtworkService artworkService, GeminiAIDescriptionService aiDescriptionService,
-			GeminiAILImageRecognitionService aiImageRecognitionService) {
+			GeminiAIImageRecognitionService aiImageRecognitionService) {
 		this.artworkService = artworkService;
 		this.aiDescriptionService = aiDescriptionService;
-		this.aiImageRecognitionService = aiImageRecognitionService;
+		this.geminiAiImageRecognitionService = aiImageRecognitionService;
 	}
 
-	@PostMapping(value = "/api/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<ArtworkResponse> addArtwork(
+	@PostMapping(value = "/api/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ArtworkResponse> saveArtwork(
 			@ModelAttribute ArtworkGallerySave artwork,
 			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
 			Authentication authentication) {
 
 		String userId = authentication.getName();
-		artworkService.saveArtwork(artwork, imageFile, userId);
+		try {
+			artworkService.saveArtwork(artwork, imageFile, userId);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ArtworkResponse("Failed to save artwork."));
+		}
 
 		return ResponseEntity.ok(
 				new ArtworkResponse("Artwork saved successfully"));
@@ -92,8 +100,16 @@ public class ArtLoverController {
 	public ResponseEntity<String> updateArt(@PathVariable String id, @ModelAttribute ArtworkModel artwork,
 			@RequestPart MultipartFile image, Authentication authentication) {
 		String userId = authentication.getName();
-		artworkService.updateArtwork(id, artwork, image, userId);
+		try {
+			artworkService.updateArtwork(id, artwork, image, userId);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Failed to update artwork.");
+		}
 		return ResponseEntity.ok("Artwork updated.");
+
 	}
 
 	@PatchMapping("/api/update/bookmark/{id}")
@@ -102,12 +118,6 @@ public class ArtLoverController {
 		String userId = authentication.getName();
 		artworkService.updateArtworkBookmark(id, bookmark, userId);
 		return ResponseEntity.ok("Bookmark updated.");
-	}
-
-	@GetMapping("/api/search")
-	public List<ArtworkSearchResult> searchArt(@RequestParam String keyword) {
-		List<ArtworkSearchResult> artworksFound = artworkService.searchArt(keyword);
-		return artworksFound;
 	}
 
 	@GetMapping("/api/generate-description")
@@ -119,7 +129,18 @@ public class ArtLoverController {
 	@PostMapping(value = "/api/recognize", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public List<ArtworkSearchResult> recognizeArtworkFromImage(@RequestParam("image") MultipartFile image) {
 		try {
-			List<ArtworkSearchResult> results = aiImageRecognitionService.recognizeImage(image);
+			List<ArtworkSearchResult> results = geminiAiImageRecognitionService.recognizeImage(image);
+			return results;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
+
+	@PostMapping(value = "/api/recognize-keywords")
+	public List<ArtworkSearchResult> recognizeArtworkFromKeywords(@RequestParam("keywords") String keywords) {
+		try {
+			List<ArtworkSearchResult> results = geminiAiImageRecognitionService.recognizeKeywords(keywords);
 			return results;
 		} catch (IOException e) {
 			e.printStackTrace();

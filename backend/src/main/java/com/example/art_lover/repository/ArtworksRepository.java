@@ -41,7 +41,9 @@ public interface ArtworksRepository
                                         "movement: 1, " +
                                         "imageUrl: 1, " +
                                         "imageKey: 1, " +
-                                        "description: 1 " +
+                                        "previewKey: 1, " +
+                                        "description: 1, " +
+                                        "bookmark: 1 " +
                                         "} }"
         })
         List<ArtworkGalleryDisplay> findArtworkWithArtistByUserId(String userId);

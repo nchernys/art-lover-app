@@ -16,6 +16,12 @@ function CardGallery({
   onSelect: (id: string) => void;
   onBookmarkUpdate: (id: string) => Promise<void>;
 }) {
+  const imageUrl = data.previewKey
+    ? `https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.previewKey}`
+    : data.imageKey
+      ? `https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`
+      : `${data.imageUrl}`;
+
   return (
     <>
       <div className="gallery-card-wrapper">
@@ -29,22 +35,15 @@ function CardGallery({
 
         <div className="gallery-card-content-wrapper">
           <div className="gallery-card-image">
-            {data.imageKey !== null ? (
-              <img
-                src={`https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`}
-                alt={`${data.imageKey}`}
-              />
-            ) : (
-              <img
-                src={data.imageUrl}
-                alt={`${data.imageUrl}`}
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
-                width={300}
-                height={300}
-              />
-            )}
+            <img
+              src={imageUrl}
+              alt={`${data.imageKey}`}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              width={300}
+              height={300}
+            />
           </div>
           <div className="gallery-card-details">
             <div className="gallery-card-details-wrapper">
