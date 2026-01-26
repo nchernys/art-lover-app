@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.art_lover.dto.artwork.ArtworkGalleryDisplay;
-import com.example.art_lover.dto.artwork.ArtworkGallerySave;
+import com.example.art_lover.dto.artwork.ArtworkDetailsView;
+import com.example.art_lover.dto.artwork.CreateArtworkCommand;
 import com.example.art_lover.dto.artwork.ArtworkResponse;
-import com.example.art_lover.dto.artwork.ArtworkSearchResult;
+import com.example.art_lover.dto.artwork.ArtworkSearchHit;
 import com.example.art_lover.dto.security.AuthRequest;
 import com.example.art_lover.dto.security.AuthResponse;
 import com.example.art_lover.exceptions.EmailAlreadyExistsException;
@@ -60,7 +60,7 @@ public class ArtLoverController {
 
 	@PostMapping(value = "/api/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ArtworkResponse> saveArtwork(
-			@ModelAttribute ArtworkGallerySave artwork,
+			@ModelAttribute CreateArtworkCommand artwork,
 			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
 			Authentication authentication) {
 
@@ -79,12 +79,12 @@ public class ArtLoverController {
 	}
 
 	@GetMapping("/api/show/{id}")
-	public ArtworkGalleryDisplay showOne(@PathVariable String id) {
+	public ArtworkDetailsView showOne(@PathVariable String id) {
 		return artworkService.showOne(id);
 	}
 
 	@GetMapping("/api/show")
-	public List<ArtworkGalleryDisplay> show(Authentication authentication) {
+	public List<ArtworkDetailsView> show(Authentication authentication) {
 		String userId = authentication.getName();
 		return artworkService.showAllByUserId(userId);
 	}
@@ -127,9 +127,9 @@ public class ArtLoverController {
 	}
 
 	@PostMapping(value = "/api/recognize", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public List<ArtworkSearchResult> recognizeArtworkFromImage(@RequestParam("image") MultipartFile image) {
+	public List<ArtworkSearchHit> recognizeArtworkFromImage(@RequestParam("image") MultipartFile image) {
 		try {
-			List<ArtworkSearchResult> results = geminiAiImageRecognitionService.recognizeImage(image);
+			List<ArtworkSearchHit> results = geminiAiImageRecognitionService.recognizeImage(image);
 			return results;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -138,9 +138,9 @@ public class ArtLoverController {
 	}
 
 	@PostMapping(value = "/api/recognize-keywords")
-	public List<ArtworkSearchResult> recognizeArtworkFromKeywords(@RequestParam("keywords") String keywords) {
+	public List<ArtworkSearchHit> recognizeArtworkFromKeywords(@RequestParam("keywords") String keywords) {
 		try {
-			List<ArtworkSearchResult> results = geminiAiImageRecognitionService.recognizeKeywords(keywords);
+			List<ArtworkSearchHit> results = geminiAiImageRecognitionService.recognizeKeywords(keywords);
 			return results;
 		} catch (IOException e) {
 			e.printStackTrace();

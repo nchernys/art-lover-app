@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,13 +32,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CORS
+                // Enable CORS (uses CorsConfigurationSource below)
                 .cors(Customizer.withDefaults())
 
-                // CSRF OFF (JWT + stateless API)
+                // Disable CSRF (JWT + stateless API)
                 .csrf(csrf -> csrf.disable())
 
-                // Stateless (no sessions)
+                // Stateless session management
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 // Disable default auth mechanisms
@@ -46,13 +47,19 @@ public class SecurityConfig {
 
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
+                        // VERY IMPORTANT: allow preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Public auth endpoints
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/signup")
                         .permitAll()
+
+                        // Everything else requires JWT
                         .anyRequest().authenticated())
 
-                // JWT FILTER (THIS IS REQUIRED)
+                // JWT filter
                 .addFilterBefore(
                         jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class);
@@ -60,13 +67,19 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS configuration
+    // Global CORS configuration (used by Spring Security)
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:5173", "https://47d073c62107.ngrok-free.app"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        // MUST use allowedOriginPatterns when allowCredentials = true
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:5173",
+                "https://*.ngrok-free.app"));
+
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
@@ -76,7 +89,6 @@ public class SecurityConfig {
         return source;
     }
 
-    // Password encoder
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

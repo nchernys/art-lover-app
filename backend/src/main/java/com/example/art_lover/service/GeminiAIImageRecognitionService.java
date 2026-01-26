@@ -16,42 +16,42 @@ import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.genai.types.Part;
-import com.example.art_lover.dto.artwork.ArtworkBoxBounds;
-import com.example.art_lover.dto.artwork.ArtworkSearchResult;
+import com.example.art_lover.dto.artwork.ImageBoxBounds;
+import com.example.art_lover.dto.artwork.ArtworkSearchHit;
 
 @Service
 public class GeminiAIImageRecognitionService {
 
         private final Client client;
-        private final MuseumArtworkService museumImageSearchService;
-        private final WikimediaService wikimediaService;
+        private final MuseumSearchService museumImageSearchService;
+        private final WikimediaSearchService wikimediaService;
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         public GeminiAIImageRecognitionService(
                         Client client,
-                        MuseumArtworkService museumImageSearchService,
-                        WikimediaService wikimediaService) {
+                        MuseumSearchService museumImageSearchService,
+                        WikimediaSearchService wikimediaService) {
 
                 this.client = client;
                 this.museumImageSearchService = museumImageSearchService;
                 this.wikimediaService = wikimediaService;
         }
 
-        public List<ArtworkSearchResult> recognizeImage(MultipartFile image)
+        public List<ArtworkSearchHit> recognizeImage(MultipartFile image)
                         throws IOException {
 
                 Content content = buildImageContent(image);
                 return runGeminiAndEnrich(content);
         }
 
-        public List<ArtworkSearchResult> recognizeKeywords(String keywords)
+        public List<ArtworkSearchHit> recognizeKeywords(String keywords)
                         throws IOException {
 
                 Content content = buildKeywordContent(keywords);
                 return runGeminiAndEnrich(content);
         }
 
-        public ArtworkBoxBounds identifyBoxBounds(InputStream inputStream, String mimetype)
+        public ImageBoxBounds identifyBoxBounds(InputStream inputStream, String mimetype)
                         throws IOException {
 
                 Content content = buildBytesImageContent(inputStream, mimetype);
@@ -59,7 +59,7 @@ public class GeminiAIImageRecognitionService {
         }
 
         // pipeline
-        private List<ArtworkSearchResult> runGeminiAndEnrich(Content content)
+        private List<ArtworkSearchHit> runGeminiAndEnrich(Content content)
                         throws IOException {
 
                 GenerateContentResponse response = client.models.generateContent(
@@ -69,19 +69,19 @@ public class GeminiAIImageRecognitionService {
 
                 String json = response.text();
 
-                List<ArtworkSearchResult> results = objectMapper.readValue(
+                List<ArtworkSearchHit> results = objectMapper.readValue(
                                 json,
-                                new TypeReference<List<ArtworkSearchResult>>() {
+                                new TypeReference<List<ArtworkSearchHit>>() {
                                 });
 
                 if (results.isEmpty()) {
                         return results;
                 }
 
-                List<ArtworkSearchResult> enriched = new ArrayList<>();
+                List<ArtworkSearchHit> enriched = new ArrayList<>();
 
                 try {
-                        for (ArtworkSearchResult result : results) {
+                        for (ArtworkSearchHit result : results) {
 
                                 String museumUrl = museumImageSearchService.findArtworkInMuseums(
                                                 result.title(), result.artist());
@@ -110,7 +110,7 @@ public class GeminiAIImageRecognitionService {
         }
 
         // find box bounds for image previews
-        private ArtworkBoxBounds runGeminiAndGetBoxBounds(Content content)
+        private ImageBoxBounds runGeminiAndGetBoxBounds(Content content)
                         throws IOException {
 
                 GenerateContentResponse response = client.models.generateContent(
@@ -120,9 +120,9 @@ public class GeminiAIImageRecognitionService {
 
                 String json = response.text();
 
-                ArtworkBoxBounds result = objectMapper.readValue(
+                ImageBoxBounds result = objectMapper.readValue(
                                 json,
-                                new TypeReference<ArtworkBoxBounds>() {
+                                new TypeReference<ImageBoxBounds>() {
                                 });
 
                 return result;

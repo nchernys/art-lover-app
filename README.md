@@ -77,6 +77,7 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Learn More Enhancements**: Expand and enrich detailed content for artworks, artists, movements, and periods.
 - **Fun Facts Feature**: Provide random, engaging facts related to an artwork.
 - **Authorization & Authentication**: Add email-based OTP verification during user sign-up to validate user identity.
+- **Testing**: Added React component and interaction tests, along with Spring Boot service and controller tests to validate core application behavior.
 
 ## Screenshots
 

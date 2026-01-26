@@ -8,6 +8,7 @@ interface Artist {
 }
 
 function UploadArtwork() {
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const [formData, setFormData] =
     useState<ArtworkInterface>(ArtworkInitialState);
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -15,7 +16,7 @@ function UploadArtwork() {
 
   const fetchArtists = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/artists", {
+      const response = await fetch(`${API_BASE}/api/artists`, {
         method: "GET",
         credentials: "include",
       });
@@ -84,19 +85,17 @@ function UploadArtwork() {
     data.append("description", formData.description);
     data.append("imageFile", formData.image);
 
-    const response = await fetch("/api/save", {
+    const response = await fetch(`${API_BASE}/api/save`, {
       method: "POST",
       credentials: "include",
       body: data,
     });
 
-    console.log(data);
     if (!response.ok) {
       throw new Error("Upload failed");
     }
 
-    const result = await response.json();
-    console.log(result);
+    console.log("Upload successful.");
     setFormData(ArtworkInitialState);
   };
 

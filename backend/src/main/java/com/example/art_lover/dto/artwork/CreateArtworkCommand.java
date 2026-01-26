@@ -1,6 +1,6 @@
 package com.example.art_lover.dto.artwork;
 
-public record ArtworkGallerySave(String title,
+public record CreateArtworkCommand(String title,
         String artist,
         String artistId,
         String year,

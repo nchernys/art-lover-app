@@ -20,6 +20,7 @@ interface Keywords {
 }
 
 function SearchByImage() {
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const [loading, setLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<ArtworkSearchResultInterface[]>([]);
   const [imageUploaded, setImageUploaded] = useState<UploadImageData>({
@@ -76,7 +77,7 @@ function SearchByImage() {
     setLoading(true);
     const data = new FormData();
     data.append("keywords", keywords.keywords);
-    const response = await fetch(`/api/recognize-keywords`, {
+    const response = await fetch(`${API_BASE}/api/recognize-keywords`, {
       method: "POST",
       credentials: "include",
       body: data,
@@ -86,7 +87,6 @@ function SearchByImage() {
     const result = await response.json();
     setLoading(false);
     setOptions(result);
-    console.log("RESULT", result);
   };
 
   const isMobile = isMobileDevice();

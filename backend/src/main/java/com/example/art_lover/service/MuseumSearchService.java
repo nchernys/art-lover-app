@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.example.art_lover.config.RestTemplateConfig;
 
 @Service
-public class MuseumArtworkService {
+public class MuseumSearchService {
 
     @Value("${smithsonian.api.key}")
     private String smithsonianApiKey;
@@ -21,7 +21,7 @@ public class MuseumArtworkService {
     private final RestTemplate restTemplate;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public MuseumArtworkService(RestTemplate restTemplate) {
+    public MuseumSearchService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

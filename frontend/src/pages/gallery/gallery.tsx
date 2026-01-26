@@ -29,6 +29,7 @@ function Gallery() {
     title: "",
   });
   const [query, setQuery] = useState<string>("");
+  const API_BASE = import.meta.env.VITE_API_BASE;
 
   useEffect(() => {
     fetchData();
@@ -52,7 +53,6 @@ function Gallery() {
 
     const result = await response.json();
     setArtworks(result);
-    console.log("ARTWORKS", result);
   };
 
   const handleDeleteModal = (id: string, title: string) => {
@@ -61,7 +61,7 @@ function Gallery() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/delete/${id}`, {
+      const response = await fetch(`${API_BASE}/api/delete/${id}`, {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -92,7 +92,7 @@ function Gallery() {
     const updateBookmark = new FormData();
     updateBookmark.append("bookmark", `${!artwork.bookmark}`);
     try {
-      const response = await fetch(`/api/update/bookmark/${id}`, {
+      const response = await fetch(`${API_BASE}/api/update/bookmark/${id}`, {
         method: "PATCH",
         credentials: "include",
         body: updateBookmark,

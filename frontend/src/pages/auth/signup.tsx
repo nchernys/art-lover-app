@@ -5,6 +5,7 @@ import type { User } from "../../types/user";
 
 export function Signup() {
   const navigate = useNavigate();
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const [userCreds, setUserCreds] = useState<User>({
     email: "",
     password: "",
@@ -70,7 +71,7 @@ export function Signup() {
       return;
     }
 
-    const response = await fetch("/api/auth/signup", {
+    const response = await fetch(`${API_BASE}/api/auth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {

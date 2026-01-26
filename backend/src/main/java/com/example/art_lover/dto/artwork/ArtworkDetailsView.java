@@ -1,6 +1,6 @@
 package com.example.art_lover.dto.artwork;
 
-public record ArtworkGalleryDisplay(
+public record ArtworkDetailsView(
                 String id,
                 String title,
                 String artist,

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Aggregation;
 // to connect the spring boot app to mongo 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.example.art_lover.dto.artwork.ArtworkGalleryDisplay;
+import com.example.art_lover.dto.artwork.ArtworkDetailsView;
 import com.example.art_lover.model.ArtworkModel;
 
 // interface 
@@ -26,7 +26,7 @@ public interface ArtworksRepository
                         "{ $lookup: { from: 'artists', localField: 'artistId', foreignField: '_id', as: 'artistName' } }",
                         "{ $unwind: '$artist' }"
         })
-        ArtworkGalleryDisplay findArtworkWithArtist(String artworkId);
+        ArtworkDetailsView findArtworkWithArtist(String artworkId);
 
         @Aggregation(pipeline = {
                         "{ $match: { userId: ?0 } }",
@@ -46,7 +46,7 @@ public interface ArtworksRepository
                                         "bookmark: 1 " +
                                         "} }"
         })
-        List<ArtworkGalleryDisplay> findArtworkWithArtistByUserId(String userId);
+        List<ArtworkDetailsView> findArtworkWithArtistByUserId(String userId);
 
         List<ArtworkModel> findByArtistId(String artistId);
 

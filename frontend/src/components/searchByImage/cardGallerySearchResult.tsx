@@ -16,6 +16,7 @@ function CardGallerySearchResult({
   onSuccess: () => void;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const [imageSelected, setImageSelected] = useState<string>("");
   const [imageSrc, setImageSrc] = useState<string>("");
 
@@ -60,7 +61,7 @@ function CardGallerySearchResult({
       newData.append("imageUrl", imageSelected);
     }
 
-    const response = await fetch("/api/save", {
+    const response = await fetch(`${API_BASE}/api/save`, {
       method: "POST",
       credentials: "include",
       body: newData,

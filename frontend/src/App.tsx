@@ -13,10 +13,11 @@ import ProtectedRoute from "./security/protectedRoute";
 export default function App() {
   const [userId, setUserId] = useState<string | null>(null);
   const navigate = useNavigate();
+  const API_BASE = import.meta.env.VITE_API_BASE;
 
   const fetchMe = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/auth/me", {
+      const response = await fetch(`${API_BASE}/api/auth/me`, {
         credentials: "include",
       });
 
@@ -36,7 +37,7 @@ export default function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/auth/logout", {
+      const response = await fetch(`${API_BASE}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

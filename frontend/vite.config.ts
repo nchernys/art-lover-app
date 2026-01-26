@@ -8,10 +8,10 @@ export default defineConfig({
     strictPort: true, // optional, keeps port fixed
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: "http://3.236.116.165:8080",
         changeOrigin: true,
       },
     },
-    allowedHosts: [".ngrok-free.app", ".ngrok.app"],
+    allowedHosts: ["http://localhost:5173"],
   },
 });

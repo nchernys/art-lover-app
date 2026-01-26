@@ -29,9 +29,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import com.example.art_lover.repository.ArtistRepository;
-import com.example.art_lover.dto.artwork.ArtworkBoxBounds;
-import com.example.art_lover.dto.artwork.ArtworkGalleryDisplay;
-import com.example.art_lover.dto.artwork.ArtworkGallerySave;
+import com.example.art_lover.dto.artwork.ImageBoxBounds;
+import com.example.art_lover.dto.artwork.ArtworkDetailsView;
+import com.example.art_lover.dto.artwork.CreateArtworkCommand;
 import com.example.art_lover.dto.r2.R2ImageUploadResponse;
 import com.example.art_lover.exceptions.ForbiddenOperationException;
 import com.example.art_lover.exceptions.ResourceNotFoundException;
@@ -85,7 +85,7 @@ public class ArtworkService {
     }
 
     // create gallery preview
-    public byte[] createPreview(InputStream inputStream, ArtworkBoxBounds box)
+    public byte[] createPreview(InputStream inputStream, ImageBoxBounds box)
             throws IOException {
 
         BufferedImage image = ImageIO.read(inputStream);
@@ -161,7 +161,7 @@ public class ArtworkService {
     }
 
     // resolve artist id
-    private ArtistModel resolveArtist(ArtworkGallerySave dto) {
+    private ArtistModel resolveArtist(CreateArtworkCommand dto) {
 
         // artistId provided
         if (dto.artistId() != null && !dto.artistId().isBlank()) {
@@ -183,22 +183,22 @@ public class ArtworkService {
     }
 
     // fetch single gallery item
-    public ArtworkGalleryDisplay showOne(String id) {
+    public ArtworkDetailsView showOne(String id) {
         // fetch one artwork record from the db with artist name included
-        ArtworkGalleryDisplay artwork = artworkRepository.findArtworkWithArtist(id);
+        ArtworkDetailsView artwork = artworkRepository.findArtworkWithArtist(id);
         return artwork;
     }
 
     // fetch all gallery items for the logged in user
-    public List<ArtworkGalleryDisplay> showAllByUserId(String userId) {
+    public List<ArtworkDetailsView> showAllByUserId(String userId) {
         // fetch all artwork records from the db
         // for the currently logged in user
         // & with the artist name
-        List<ArtworkGalleryDisplay> artworks = artworkRepository.findArtworkWithArtistByUserId(userId);
+        List<ArtworkDetailsView> artworks = artworkRepository.findArtworkWithArtistByUserId(userId);
         return artworks;
     }
 
-    public void saveArtwork(ArtworkGallerySave dto, MultipartFile imageFile, String userId) throws IOException {
+    public void saveArtwork(CreateArtworkCommand dto, MultipartFile imageFile, String userId) throws IOException {
         ArtworkModel artwork = new ArtworkModel();
         if (imageFile != null && !imageFile.isEmpty()) {
             String extension = getExtension(imageFile.getOriginalFilename());
@@ -239,7 +239,7 @@ public class ArtworkService {
         try (
                 InputStream previewBytesForBoxDetection = new ByteArrayInputStream(imageBytes);
                 InputStream previewBytesForPreviewCreation = new ByteArrayInputStream(imageBytes)) {
-            ArtworkBoxBounds box = geminiAIImageRecognitionService
+            ImageBoxBounds box = geminiAIImageRecognitionService
                     .identifyBoxBounds(previewBytesForBoxDetection, mimeType);
 
             String key = "previews/" + UUID.randomUUID() + ".jpg";

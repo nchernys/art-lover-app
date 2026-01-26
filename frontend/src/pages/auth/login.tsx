@@ -9,6 +9,7 @@ type LoginProps = {
 
 export function Login({ onLogin }: LoginProps) {
   const navigate = useNavigate();
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const [userCreds, setUserCreds] = useState<User>({
     email: "",
     password: "",
@@ -29,7 +30,7 @@ export function Login({ onLogin }: LoginProps) {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-    const response: Response = await fetch("/api/auth/login", {
+    const response: Response = await fetch(`${API_BASE}/api/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: {
