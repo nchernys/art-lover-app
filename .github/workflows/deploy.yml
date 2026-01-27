@@ -62,7 +62,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         working-directory: frontend
@@ -71,6 +71,8 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+        env: 
+          VITE_API_BASE: ${{ secrets.VITE_API_BASE }}
 
       - name: Deploy to S3
         run: |
