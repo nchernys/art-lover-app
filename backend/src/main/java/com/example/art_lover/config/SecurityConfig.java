@@ -64,7 +64,8 @@ public class SecurityConfig {
                 "http://3.236.116.165:*", // EC2 IP (any port)
                 "http://3.236.116.165:8080", // Specific backend port
                 "http://3.236.116.165:5173",
-                "https://*.cloudfront.net", // If frontend is on S3 + CloudFront
+                "https://*.cloudfront.net",
+                "https://api.nchernysheva.com", // If frontend is on S3 + CloudFront
                 "*"));
 
         config.setAllowedMethods(List.of(
