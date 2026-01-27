@@ -1,2 +1,4 @@
 export const API_BASE =
-  import.meta.env.VITE_API_BASE || "http://3.236.116.165:8080";
+  import.meta.env.REACT_APP_ENV === "production"
+    ? import.meta.env.VITE_API_BASE
+    : "http://localhost:8080";
