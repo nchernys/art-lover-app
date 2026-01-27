@@ -16,8 +16,9 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Backend:** Java, Spring Boot
 - **AI Services:** Gemini (AI description and image recognition)
 - **Database:** MongoDB Atlas
+- **Cloud Storage:** Cloudflare R2
 - **External APIs:** The MET Museum API, Rijksmuseum API, Smithsonian Museum API, Europeana API, and Wikimedia Commons API for cultural heritage and artwork data
-- **Deployment:** AWS EC2 (Java Spring Boot backend)
+- **Deployment:** AWS EC2 (Java Spring Boot backend), Amazon S3 + Cloudfront (React frontend)
 
 ---
 
