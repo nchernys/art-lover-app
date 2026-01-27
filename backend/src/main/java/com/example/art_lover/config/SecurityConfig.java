@@ -60,13 +60,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOriginPatterns(List.of(
-                "http://localhost:5173",
-                "http://3.236.116.165:*", // EC2 IP (any port)
-                "http://3.236.116.165:8080", // Specific backend port
-                "http://3.236.116.165:5173",
-                "https://*.cloudfront.net",
-                "https://api.nchernysheva.com", // If frontend is on S3 + CloudFront
-                "*"));
+                "http://localhost:5173", // for development
+                "https://d14hss9iu6yo59.cloudfront.net"));
 
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
