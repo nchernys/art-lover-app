@@ -68,5 +68,5 @@ jobs:
           script: |
             mkdir -p /home/ec2-user/app
             pkill -f app.jar || true
-            nohup java -jar /home/ec2-user/app/app.jar \
+            nohup /usr/bin/java -jar /home/ec2-user/app/app.jar \
               > /home/ec2-user/app/app.log 2>&1 &
