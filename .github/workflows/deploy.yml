@@ -38,15 +38,16 @@ jobs:
           if [ -d "frontend/dist" ]; then
             cp -r frontend/dist/* backend/src/main/resources/static/
           else
-            echo "No frontend build directory found"
+            echo "❌ No frontend build directory found"
             exit 1
           fi
 
       - name: Build Spring Boot
         working-directory: backend
         run: |
-          chmod +x mvnw 
+          chmod +x mvnw
           ./mvnw clean package -DskipTests
+          mv target/*.jar target/app.jar
 
       # ---------- DEPLOY ----------
       - name: Deploy to EC2
@@ -55,7 +56,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: backend/target/*.jar
+          source: backend/target/app.jar
           target: /home/ec2-user/app
 
       - name: Restart app on EC2
@@ -65,5 +66,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            pkill -f java || true
-            nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &
+            mkdir -p /home/ec2-user/app
+            pkill -f app.jar || true
+            nohup java -jar /home/ec2-user/app/app.jar \
+              > /home/ec2-user/app/app.log 2>&1 &
