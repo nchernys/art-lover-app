@@ -32,34 +32,22 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // Enable CORS (uses CorsConfigurationSource below)
                 .cors(Customizer.withDefaults())
-
-                // Disable CSRF (JWT + stateless API)
                 .csrf(csrf -> csrf.disable())
-
-                // Stateless session management
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // Disable default auth mechanisms
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable())
 
-                // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        // VERY IMPORTANT: allow preflight requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Public auth endpoints
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/signup")
                         .permitAll()
-
-                        // Everything else requires JWT
                         .anyRequest().authenticated())
 
-                // JWT filter
                 .addFilterBefore(
                         jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class);
@@ -67,15 +55,13 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Global CORS configuration (used by Spring Security)
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // MUST use allowedOriginPatterns when allowCredentials = true
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "http://3.236.116.165:*", // Your EC2 IP (any port)
+                "http://3.236.116.165:*", // EC2 IP (any port)
                 "http://3.236.116.165:8080", // Specific backend port
                 "http://3.236.116.165:5173", // If frontend is also on EC2
                 "*"));
