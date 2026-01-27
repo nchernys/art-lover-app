@@ -12,10 +12,12 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 
 ## Tech Stack
 
-- **Frontend:** React.js (Web)
+- **Frontend:** React.js (TypeScript)
 - **Backend:** Java, Spring Boot
 - **AI Services:** Gemini (AI description and image recognition)
 - **Database:** MongoDB Atlas
+- **External APIs:** The MET Museum API, Rijksmuseum API, Smithsonian Museum API, Europeana API, and Wikimedia Commons API for cultural heritage and artwork data
+- **Deployment:** AWS EC2 (Java Spring Boot backend)
 
 ---
 
