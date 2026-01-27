@@ -34,7 +34,7 @@ jobs:
       - name: Copy React build into Spring Boot
         run: |
           rm -rf backend/src/main/resources/static/*
-          cp -r frontend/build/* backend/src/main/resources/static/
+          cp -r frontend/dist/* backend/src/main/resources/static/
 
       - name: Build Spring Boot
         working-directory: backend
