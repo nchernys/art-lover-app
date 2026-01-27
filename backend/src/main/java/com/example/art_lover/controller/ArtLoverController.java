@@ -203,7 +203,7 @@ public class ArtLoverController {
 					.httpOnly(true)
 					.secure(false) // true in production w/ https
 					.path("/")
-					.sameSite("None") // Strict in production
+					.sameSite("Lax") // Strict in production
 					.maxAge(60 * 60) // 1 hour
 					.build();
 
