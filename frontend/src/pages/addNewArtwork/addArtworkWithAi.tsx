@@ -39,7 +39,7 @@ function SearchByImage() {
     setImageUploaded({ image: file });
     const data = new FormData();
     data.append("image", file);
-    const response = await fetch(`/api/recognize`, {
+    const response = await fetch(`${API_BASE}/api/recognize`, {
       method: "POST",
       credentials: "include",
       body: data,

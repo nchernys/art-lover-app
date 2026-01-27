@@ -42,7 +42,7 @@ function Gallery() {
   }, [isBookmarkMode]);
 
   const fetchData = async () => {
-    const response = await fetch("/api/show", {
+    const response = await fetch(`${API_BASE}/api/show`, {
       method: "GET",
       credentials: "include",
     });
