@@ -2,6 +2,7 @@ import "./login.css";
 import { useState } from "react";
 import type { User } from "../../types/user";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../baseUrl";
 
 type LoginProps = {
   onLogin: () => void;
@@ -9,7 +10,6 @@ type LoginProps = {
 
 export function Login({ onLogin }: LoginProps) {
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const [userCreds, setUserCreds] = useState<User>({
     email: "",
     password: "",

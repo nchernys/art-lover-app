@@ -2,10 +2,10 @@ import "./signup.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../../types/user";
+import { API_BASE } from "../../baseUrl";
 
 export function Signup() {
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const [userCreds, setUserCreds] = useState<User>({
     email: "",
     password: "",

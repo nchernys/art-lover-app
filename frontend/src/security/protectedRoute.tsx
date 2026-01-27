@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState, type ReactNode } from "react";
+import { API_BASE } from "../baseUrl";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -11,7 +12,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("/api/auth/me", {
+        const res = await fetch(`${API_BASE}/api/auth/me`, {
           method: "GET",
           credentials: "include",
         });

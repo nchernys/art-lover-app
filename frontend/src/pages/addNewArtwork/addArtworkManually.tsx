@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ArtworkInterface } from "../../types/artwork";
 import { ArtworkInitialState } from "../../types/artwork";
+import { API_BASE } from "../../baseUrl";
 
 interface Artist {
   id: string;
@@ -8,7 +9,6 @@ interface Artist {
 }
 
 function UploadArtwork() {
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const [formData, setFormData] =
     useState<ArtworkInterface>(ArtworkInitialState);
   const [artists, setArtists] = useState<Artist[]>([]);

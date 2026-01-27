@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import type { ArtworkSearchResultInterface } from "../../types/artworkSearchResult";
 import type { UploadImageData } from "../../types/uploadImageData";
+import { API_BASE } from "../../baseUrl";
 
 function CardGallerySearchResult({
   data,
@@ -16,7 +17,6 @@ function CardGallerySearchResult({
   onSuccess: () => void;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const [imageSelected, setImageSelected] = useState<string>("");
   const [imageSrc, setImageSrc] = useState<string>("");
 

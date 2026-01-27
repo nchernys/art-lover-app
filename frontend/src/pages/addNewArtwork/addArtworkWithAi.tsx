@@ -7,6 +7,7 @@ import CardGallerySearchResult from "../../components/searchByImage/cardGalleryS
 import type { UploadImageData } from "../../types/uploadImageData";
 import { Toast } from "../../components/notifications/toast";
 import { Loader } from "../../components/notifications/loader";
+import { API_BASE } from "../../baseUrl";
 
 function isMobileDevice(): boolean {
   return (
@@ -20,7 +21,6 @@ interface Keywords {
 }
 
 function SearchByImage() {
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const [loading, setLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<ArtworkSearchResultInterface[]>([]);
   const [imageUploaded, setImageUploaded] = useState<UploadImageData>({

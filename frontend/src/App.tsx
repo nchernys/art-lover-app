@@ -9,11 +9,11 @@ import SearchByImage from "./pages/addNewArtwork/addArtworkWithAi";
 import { Login } from "./pages/auth/login";
 import { Signup } from "./pages/auth/signup";
 import ProtectedRoute from "./security/protectedRoute";
+import { API_BASE } from "./baseUrl";
 
 export default function App() {
   const [userId, setUserId] = useState<string | null>(null);
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_BASE;
 
   const fetchMe = async () => {
     try {

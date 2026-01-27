@@ -1,32 +1,61 @@
-name: Deploy to EC2
+name: Deploy React + Spring Boot to EC2
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      # ---------- FRONTEND ----------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Deploy on EC2
+      - name: Build React
+        working-directory: frontend
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e
-            cd /home/ec2-user/art-lover-app/
-            git pull
-            cd /home/ec2-user/art-lover-app/backend
-            ./mvnw clean package -DskipTests
-            sudo systemctl restart artlover
-          EOF
+          npm install
+          npm run build
+
+      # ---------- BACKEND ----------
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: 21
+
+      - name: Copy React build into Spring Boot
+        run: |
+          rm -rf backend/src/main/resources/static/*
+          cp -r frontend/build/* backend/src/main/resources/static/
+
+      - name: Build Spring Boot
+        working-directory: backend
+        run: ./mvnw clean package -DskipTests
+
+      # ---------- DEPLOY ----------
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: backend/target/*.jar
+          target: /home/ec2-user/app
+
+      - name: Restart app on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            pkill -f java || true
+            nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &

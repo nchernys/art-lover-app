@@ -9,6 +9,7 @@ import { DeleteModal } from "../../components/gallery/modals/deleteModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+import { API_BASE } from "../../baseUrl";
 
 interface DeleteModalInterface {
   id: string;
@@ -29,7 +30,6 @@ function Gallery() {
     title: "",
   });
   const [query, setQuery] = useState<string>("");
-  const API_BASE = import.meta.env.VITE_API_BASE;
 
   useEffect(() => {
     fetchData();
