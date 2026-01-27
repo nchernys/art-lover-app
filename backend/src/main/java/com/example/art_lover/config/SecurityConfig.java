@@ -75,7 +75,10 @@ public class SecurityConfig {
         // MUST use allowedOriginPatterns when allowCredentials = true
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "https://*.ngrok-free.app"));
+                "http://3.236.116.165:*", // Your EC2 IP (any port)
+                "http://3.236.116.165:8080", // Specific backend port
+                "http://3.236.116.165:5173", // If frontend is also on EC2
+                "*"));
 
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
