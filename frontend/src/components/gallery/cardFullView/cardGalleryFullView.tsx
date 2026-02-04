@@ -16,6 +16,11 @@ function CardGalleryFullView({
   onBookmarkUpdate: (id: string) => Promise<void>;
   onImageFullView: () => void;
 }) {
+  const image =
+    data.imageKey !== null
+      ? `https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`
+      : `${data.imageUrl}`;
+
   return (
     <div className="gallary-card-screen-full-view">
       <div className="gallery-card-wrapper-full-view">
@@ -30,19 +35,18 @@ function CardGalleryFullView({
         </div>
         <div className="gallery-card-content-wrapper-full-view">
           <div className="gallery-card-image-full-view">
-            <CardCornerAction
-              onAction={onImageFullView}
-              payload={data.imageKey !== null ? data.imageKey : data.imageUrl}
-              corner={"bottomLeft"}
-              icon={"zoom"}
-            />
-            {data.imageKey !== null ? (
-              <img
-                src={`https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`}
-                alt={`${data.imageKey}`}
+            {image && (
+              <CardCornerAction
+                onAction={onImageFullView}
+                payload={data.imageKey !== null ? data.imageKey : data.imageUrl}
+                corner={"bottomLeft"}
+                icon={"zoom"}
               />
+            )}
+            {image ? (
+              <img src={image} alt={`${data.title}`} />
             ) : (
-              <img src={data.imageUrl} alt={`${data.imageUrl}`} />
+              <div className="gallery-card-full-view-no-image">NO IMAGE</div>
             )}
           </div>
           <div className="gallery-card-details gallery-card-details-full-view">

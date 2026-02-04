@@ -19,6 +19,8 @@ import com.google.genai.types.Part;
 import com.example.art_lover.dto.artwork.ImageBoxBounds;
 import com.example.art_lover.dto.artwork.ArtworkSearchHit;
 
+import com.example.art_lover.exceptions.ImageRecognitionException;;
+
 @Service
 public class GeminiAIImageRecognitionService {
 
@@ -37,18 +39,22 @@ public class GeminiAIImageRecognitionService {
                 this.wikimediaService = wikimediaService;
         }
 
-        public List<ArtworkSearchHit> recognizeImage(MultipartFile image)
-                        throws IOException {
-
-                Content content = buildImageContent(image);
-                return runGeminiAndEnrich(content);
+        public List<ArtworkSearchHit> recognizeImage(MultipartFile image) {
+                try {
+                        Content content = buildImageContent(image);
+                        return runGeminiAndEnrich(content);
+                } catch (IOException e) {
+                        throw new ImageRecognitionException("Failed to process image", e);
+                }
         }
 
-        public List<ArtworkSearchHit> recognizeKeywords(String keywords)
-                        throws IOException {
-
-                Content content = buildKeywordContent(keywords);
-                return runGeminiAndEnrich(content);
+        public List<ArtworkSearchHit> recognizeKeywords(String keywords) {
+                try {
+                        Content content = buildKeywordContent(keywords);
+                        return runGeminiAndEnrich(content);
+                } catch (IOException e) {
+                        throw new ImageRecognitionException("Failed to process image", e);
+                }
         }
 
         public ImageBoxBounds identifyBoxBounds(InputStream inputStream, String mimetype)

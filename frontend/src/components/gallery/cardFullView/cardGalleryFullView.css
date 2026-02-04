@@ -46,6 +46,17 @@
   display: block;
 }
 
+.gallery-card-full-view-no-image {
+  width: 15rem;
+  height: 15rem;
+  background-color: var(--night-gray-30);
+  color: var(--night-gray-80);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+}
+
 .gallery-card-details-full-view {
   padding: 0;
   grid-template-columns: 1fr;

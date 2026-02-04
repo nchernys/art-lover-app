@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../../types/user";
 import { API_BASE } from "../../baseUrl";
+import { apiFetch } from "../../utils/apiFetch";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ export function Signup() {
       return;
     }
 
-    const response = await fetch(`${API_BASE}/api/auth/signup`, {
+    const response = await apiFetch(`${API_BASE}/api/auth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -95,11 +96,11 @@ export function Signup() {
   };
 
   return (
-    <div className="login-form">
+    <div className="signup-form">
       <form onSubmit={handleSubmit}>
-        <div className="login-form-header">Register</div>
+        <div className="signup-form-header">Register</div>
         {errorSubmittingForm && (
-          <div className="error-message">
+          <div className="signup-error-message">
             {errorMessage !== ""
               ? errorMessage
               : "Error submitting the form. Please try again..."}
@@ -143,12 +144,12 @@ export function Signup() {
             onChange={handleChange}
           />
           {passwordMatchError && (
-            <div className="error-message">Passwords must match!</div>
+            <div className="signup-error-message">Passwords must match!</div>
           )}
         </div>
         <button>Submit</button>
       </form>
-      <div className="login-signup-message">
+      <div className="signup-message">
         Already have an account? <a href="/login">Log in</a>
       </div>
     </div>

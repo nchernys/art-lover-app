@@ -6,9 +6,13 @@
 .login-form-header {
   font-size: 2rem;
   font-weight: 700;
-  padding: 1rem 0;
 }
 
 .login-signup-message a {
   color: var(--hot-pink);
+}
+
+.login-error {
+  color: red;
+  min-height: 1.5rem;
 }

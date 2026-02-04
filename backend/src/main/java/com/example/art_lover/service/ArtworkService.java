@@ -5,11 +5,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
-
 import org.springframework.data.domain.Sort;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.art_lover.model.ArtworkModel;
 import com.example.art_lover.model.ArtistModel;
@@ -30,10 +30,16 @@ import java.net.http.HttpResponse;
 
 import com.example.art_lover.repository.ArtistRepository;
 import com.example.art_lover.dto.artwork.ImageBoxBounds;
+import com.example.art_lover.dto.artwork.UpdateArtworkCommand;
 import com.example.art_lover.dto.artwork.ArtworkDetailsView;
 import com.example.art_lover.dto.artwork.CreateArtworkCommand;
 import com.example.art_lover.dto.r2.R2ImageUploadResponse;
+import com.example.art_lover.exceptions.ArtworkNotFoundException;
+import com.example.art_lover.exceptions.ArtworkSaveException;
+import com.example.art_lover.exceptions.ArtworkUpdateException;
 import com.example.art_lover.exceptions.ForbiddenOperationException;
+import com.example.art_lover.exceptions.ImageDownloadException;
+import com.example.art_lover.exceptions.ImageProcessingException;
 import com.example.art_lover.exceptions.ResourceNotFoundException;
 
 @Service
@@ -56,14 +62,13 @@ public class ArtworkService {
     }
 
     // download image from public urls to create gallery previews
-    private InputStream downloadImage(String imageUrl) throws IOException {
+    private InputStream downloadImage(String imageUrl) {
+
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(imageUrl))
-                .header(
-                        "User-Agent",
-                        "ArtLoverApp/1.0 (contact: ch@gmail.com)")
+                .header("User-Agent", "ArtLoverApp/1.0 (contact: ch@gmail.com)")
                 .header("Accept", "image/*")
                 .GET()
                 .build();
@@ -72,76 +77,90 @@ public class ArtworkService {
             HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 
             if (response.statusCode() != 200) {
-                throw new IOException(
+                throw new ImageDownloadException(
                         "Failed to download image: HTTP " + response.statusCode());
             }
 
             return new ByteArrayInputStream(response.body());
 
+        } catch (IOException e) {
+            throw new ImageDownloadException("Failed to download image", e);
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IOException("Image download interrupted", e);
+            throw new ImageDownloadException("Image download interrupted", e);
         }
     }
 
     // create gallery preview
-    public byte[] createPreview(InputStream inputStream, ImageBoxBounds box)
-            throws IOException {
+    public byte[] createPreview(InputStream inputStream, ImageBoxBounds box) {
 
-        BufferedImage image = ImageIO.read(inputStream);
-
-        int imgW = image.getWidth();
-        int imgH = image.getHeight();
-
-        // Convert normalized box → pixels
-        double boxX = box.x() * imgW;
-        double boxY = box.y() * imgH;
-        double boxW = box.width() * imgW;
-        double boxH = box.height() * imgH;
-
-        // Center of detected box
-        double centerX = boxX + boxW / 2.0;
-        double centerY = boxY + boxH / 2.0;
-
-        // Make square using the larger dimension
-        double size = Math.max(boxW, boxH);
-
-        // Expand to include head / hair
-        size *= 1.8; // adjust if needed (1.2–1.5)
-
-        // Bias upward slightly (faces need more space above eyes)
-        // centerY -= boxH * 0.15;
-
-        int half = (int) (size / 2);
-
-        int cropX = (int) (centerX - half);
-        int cropY = (int) (centerY - half);
-        int cropSize = (int) size;
-
-        // Clamp to image bounds
-        if (cropX < 0)
-            cropX = 0;
-        if (cropY < 0)
-            cropY = 0;
-
-        if (cropX + cropSize > imgW) {
-            cropSize = imgW - cropX;
-        }
-        if (cropY + cropSize > imgH) {
-            cropSize = imgH - cropY;
+        if (inputStream == null) {
+            throw new IllegalArgumentException("No image data provided");
         }
 
-        BufferedImage cropped = image.getSubimage(cropX, cropY, cropSize, cropSize);
+        if (box == null) {
+            throw new IllegalArgumentException("No bounding box provided");
+        }
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            BufferedImage image = ImageIO.read(inputStream);
 
-        Thumbnails.of(cropped)
-                .size(600, 600)
-                .outputFormat("jpg")
-                .outputQuality(1.0)
-                .toOutputStream(out);
+            if (image == null) {
+                throw new IllegalArgumentException("Invalid image file");
+            }
 
-        return out.toByteArray();
+            int imgW = image.getWidth();
+            int imgH = image.getHeight();
+
+            // Convert normalized box → pixels
+            double boxX = box.x() * imgW;
+            double boxY = box.y() * imgH;
+            double boxW = box.width() * imgW;
+            double boxH = box.height() * imgH;
+
+            // Center of detected box
+            double centerX = boxX + boxW / 2.0;
+            double centerY = boxY + boxH / 2.0;
+
+            // Square crop
+            double size = Math.max(boxW, boxH) * 1.8;
+
+            int half = (int) (size / 2);
+            int cropX = (int) (centerX - half);
+            int cropY = (int) (centerY - half);
+            int cropSize = (int) size;
+
+            // Clamp to bounds
+            cropX = Math.max(0, cropX);
+            cropY = Math.max(0, cropY);
+
+            if (cropX + cropSize > imgW) {
+                cropSize = imgW - cropX;
+            }
+            if (cropY + cropSize > imgH) {
+                cropSize = imgH - cropY;
+            }
+
+            if (cropSize <= 0) {
+                throw new ImageProcessingException("Invalid crop dimensions");
+            }
+
+            BufferedImage cropped = image.getSubimage(cropX, cropY, cropSize, cropSize);
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Thumbnails.of(cropped)
+                    .size(600, 600)
+                    .outputFormat("jpg")
+                    .outputQuality(1.0)
+                    .toOutputStream(out);
+
+            return out.toByteArray();
+
+        } catch (IOException e) {
+            throw new ImageProcessingException("Failed to generate image preview", e);
+        }
     }
 
     private String getExtension(String fileName) {
@@ -198,78 +217,89 @@ public class ArtworkService {
         return artworks;
     }
 
-    public void saveArtwork(CreateArtworkCommand dto, MultipartFile imageFile, String userId) throws IOException {
-        ArtworkModel artwork = new ArtworkModel();
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String extension = getExtension(imageFile.getOriginalFilename());
-            String key = "images/" + UUID.randomUUID() + extension;
-            // save the image to Cloudflare R2 storage and get the image url
-            R2ImageUploadResponse image = r2ImageService.uploadImage(
-                    imageFile.getInputStream(),
-                    imageFile.getSize(),
-                    key,
-                    imageFile.getContentType());
+    public void saveArtwork(
+            CreateArtworkCommand dto,
+            MultipartFile imageFile,
+            String userId) {
 
-            // save the image url to the artwork object
-            artwork.setImageUrl(image.getUrl());
-            artwork.setImageKey(image.getKey());
+        try {
+            ArtworkModel artwork = new ArtworkModel();
 
-        } else {
-            // if image was not uploaded, save its public url
-            artwork.setImageUrl(dto.imageUrl());
-        }
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String extension = getExtension(imageFile.getOriginalFilename());
+                String key = "images/" + UUID.randomUUID() + extension;
 
-        // crop and save face-weighted image preview
-        byte[] imageBytes;
+                R2ImageUploadResponse image = r2ImageService.uploadImage(
+                        imageFile.getInputStream(),
+                        imageFile.getSize(),
+                        key,
+                        imageFile.getContentType());
 
-        String mimeType;
+                artwork.setImageUrl(image.getUrl());
+                artwork.setImageKey(image.getKey());
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-            imageBytes = imageFile.getBytes();
-            mimeType = imageFile.getContentType();
-        } else {
-            try (InputStream in = downloadImage(dto.imageUrl())) {
-                imageBytes = in.readAllBytes();
-            }
-            mimeType = imageFile != null
-                    ? imageFile.getContentType()
-                    : "image/jpeg";
-        }
-
-        try (
-                InputStream previewBytesForBoxDetection = new ByteArrayInputStream(imageBytes);
-                InputStream previewBytesForPreviewCreation = new ByteArrayInputStream(imageBytes)) {
-            ImageBoxBounds box = geminiAIImageRecognitionService
-                    .identifyBoxBounds(previewBytesForBoxDetection, mimeType);
-
-            String key = "previews/" + UUID.randomUUID() + ".jpg";
-            byte[] preview = createPreview(previewBytesForPreviewCreation, box);
-
-            if (preview.length == 0) {
-                throw new IllegalStateException("Generated preview is empty");
+            } else {
+                artwork.setImageUrl(dto.imageUrl());
             }
 
-            R2ImageUploadResponse previewImg = r2ImageService.uploadImage(new ByteArrayInputStream(preview),
-                    preview.length,
-                    key,
-                    "image/jpeg");
+            byte[] imageBytes = null;
+            String mimeType = null;
 
-            artwork.setPreviewKey(previewImg.getKey());
+            boolean hasUploadedFile = imageFile != null && !imageFile.isEmpty();
+
+            boolean hasImageUrl = dto.imageUrl() != null && !dto.imageUrl().isBlank();
+
+            if (hasUploadedFile) {
+                imageBytes = imageFile.getBytes();
+                mimeType = imageFile.getContentType();
+            } else if (hasImageUrl) {
+                try (InputStream in = downloadImage(dto.imageUrl())) {
+                    imageBytes = in.readAllBytes();
+                }
+                mimeType = "image/jpeg";
+            }
+
+            boolean hasUploadedImage = imageBytes != null && imageBytes.length > 0;
+
+            if (hasUploadedImage) {
+                try (
+                        InputStream forBoxDetection = new ByteArrayInputStream(imageBytes);
+                        InputStream forPreviewCreation = new ByteArrayInputStream(imageBytes)) {
+                    ImageBoxBounds box = geminiAIImageRecognitionService
+                            .identifyBoxBounds(forBoxDetection, mimeType);
+
+                    byte[] preview = createPreview(forPreviewCreation, box);
+
+                    if (preview.length == 0) {
+                        throw new ImageProcessingException("Generated preview is empty");
+                    }
+
+                    String previewKey = "previews/" + UUID.randomUUID() + ".jpg";
+
+                    R2ImageUploadResponse previewImg = r2ImageService.uploadImage(
+                            new ByteArrayInputStream(preview),
+                            preview.length,
+                            previewKey,
+                            "image/jpeg");
+
+                    artwork.setPreviewKey(previewImg.getKey());
+                }
+            }
+
+            ArtistModel artist = resolveArtist(dto);
+            artwork.setArtistId(artist.getId());
+
+            artwork.setTitle(dto.title());
+            artwork.setYear(dto.year());
+            artwork.setMovement(dto.movement());
+            artwork.setDescription(dto.description());
+            artwork.setUserId(userId);
+
+            artworkRepository.save(artwork);
+
+        } catch (IOException e) {
+            throw new ArtworkSaveException("Failed to save artwork", e);
         }
-
-        // resolve artist name
-        ArtistModel artist = resolveArtist(dto);
-        artwork.setArtistId(artist.getId());
-
-        // copy data from dto to artwork
-        artwork.setTitle(dto.title());
-        artwork.setYear(dto.year());
-        artwork.setMovement(dto.movement());
-        artwork.setDescription(dto.description());
-        artwork.setUserId(userId);
-
-        // save the artwork object with the image url to MongoDB
-        artworkRepository.save(artwork);
     }
 
     public void deleteArtwork(String id, String userId) {
@@ -298,40 +328,51 @@ public class ArtworkService {
         artworkRepository.deleteById(id);
     }
 
-    public void updateArtwork(String id, ArtworkModel artwork, MultipartFile imageFile, String userId)
-            throws IOException {
-        ArtworkModel toUpdate = artworkRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Artwork not found."));
-        if (!Objects.equals(artwork.getUserId(), userId))
-            throw new ForbiddenOperationException("User is not authorized to update this artwork.");
-        toUpdate.setTitle(artwork.getTitle());
-        toUpdate.setArtistId(artwork.getArtistId());
-        toUpdate.setYear(artwork.getYear());
-        toUpdate.setContinent(artwork.getContinent());
-        toUpdate.setCountry(artwork.getCountry());
-        toUpdate.setBookmark(artwork.getBookmark());
-        toUpdate.setMovement(artwork.getMovement());
-        toUpdate.setDescription(artwork.getDescription());
+    public void updateArtwork(
+            String id,
+            UpdateArtworkCommand dto,
+            MultipartFile imageFile,
+            String userId) {
 
-        // only update image if new image is added
-        if (imageFile != null && !imageFile.isEmpty()) {
+        try {
+            ArtworkModel toUpdate = artworkRepository.findById(id)
+                    .orElseThrow(() -> new ArtworkNotFoundException(id));
 
-            // delete old image from R2
-            if (toUpdate.getImageKey() != null) {
-                r2ImageService.deleteImage(toUpdate.getImageKey());
+            if (!Objects.equals(toUpdate.getUserId(), userId)) {
+                throw new ForbiddenOperationException(
+                        "User is not authorized to update this artwork");
             }
 
-            R2ImageUploadResponse data = r2ImageService.uploadImage(
-                    imageFile.getInputStream(),
-                    imageFile.getSize(),
-                    imageFile.getOriginalFilename(),
-                    imageFile.getContentType());
+            toUpdate.setTitle(dto.title());
+            toUpdate.setArtistId(dto.artistId());
+            toUpdate.setYear(dto.year());
+            toUpdate.setContinent(dto.continent());
+            toUpdate.setCountry(dto.country());
+            toUpdate.setBookmark(dto.bookmark());
+            toUpdate.setMovement(dto.movement());
+            toUpdate.setDescription(dto.description());
 
-            toUpdate.setImageKey(data.getKey());
-            toUpdate.setImageUrl(data.getUrl());
+            if (imageFile != null && !imageFile.isEmpty()) {
+
+                if (toUpdate.getImageKey() != null) {
+                    r2ImageService.deleteImage(toUpdate.getImageKey());
+                }
+
+                R2ImageUploadResponse data = r2ImageService.uploadImage(
+                        imageFile.getInputStream(),
+                        imageFile.getSize(),
+                        "images/" + UUID.randomUUID(),
+                        imageFile.getContentType());
+
+                toUpdate.setImageKey(data.getKey());
+                toUpdate.setImageUrl(data.getUrl());
+            }
+
+            artworkRepository.save(toUpdate);
+
+        } catch (IOException e) {
+            throw new ArtworkUpdateException("Failed to update artwork", e);
         }
-
-        artworkRepository.save(toUpdate);
     }
 
     public void updateArtworkBookmark(String id, Boolean bookmark, String userId) {

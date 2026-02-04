@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import type { ArtworkInterface } from "../../types/artwork";
 import { ArtworkInitialState } from "../../types/artwork";
 import { API_BASE } from "../../baseUrl";
+import { apiFetch } from "../../utils/apiFetch";
 
 interface Artist {
   id: string;
@@ -16,7 +17,7 @@ function UploadArtwork() {
 
   const fetchArtists = async () => {
     try {
-      const response = await fetch(`${API_BASE}/api/artists`, {
+      const response = await apiFetch(`${API_BASE}/api/artists`, {
         method: "GET",
         credentials: "include",
       });
@@ -85,7 +86,7 @@ function UploadArtwork() {
     data.append("description", formData.description);
     data.append("imageFile", formData.image);
 
-    const response = await fetch(`${API_BASE}/api/save`, {
+    const response = await apiFetch(`${API_BASE}/api/save`, {
       method: "POST",
       credentials: "include",
       body: data,

@@ -1,0 +1,28 @@
+.error-modal-message {
+  width: 100%;
+  max-width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1rem;
+  background-color: var(--dark-gray);
+  color: var(--whitesmoke);
+  z-index: 9999;
+  padding: 2rem;
+  box-sizing: border-box;
+  box-shadow: 0 10px 15px var(--dark-gray);
+  text-align: center;
+}
+
+.error-modal-text {
+  padding: 0.5rem;
+  line-height: 2;
+}
+
+.error-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}

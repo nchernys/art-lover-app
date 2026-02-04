@@ -6,12 +6,12 @@ export default defineConfig({
   server: {
     host: true,
     strictPort: true,
-    proxy: {
-      "/api": {
-        target: "https://api.nchernysheva.com",
-        changeOrigin: true,
-      },
-    },
+    //    proxy: {
+    //      "/api": {
+    //        target: "https://api.nchernysheva.com",
+    //        changeOrigin: true,
+    //      },
+    //    },
     allowedHosts: ["http://localhost:5173"],
   },
 });

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { API_BASE } from "../../baseUrl";
-
+import { apiFetch } from "../../utils/apiFetch";
 interface DeleteModalInterface {
   id: string;
   title: string;
@@ -42,7 +42,7 @@ function Gallery() {
   }, [isBookmarkMode]);
 
   const fetchData = async () => {
-    const response = await fetch(`${API_BASE}/api/show`, {
+    const response = await apiFetch(`${API_BASE}/api/show`, {
       method: "GET",
       credentials: "include",
     });
@@ -61,7 +61,7 @@ function Gallery() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`${API_BASE}/api/delete/${id}`, {
+      const response = await apiFetch(`${API_BASE}/api/delete/${id}`, {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -92,7 +92,7 @@ function Gallery() {
     const updateBookmark = new FormData();
     updateBookmark.append("bookmark", `${!artwork.bookmark}`);
     try {
-      const response = await fetch(`${API_BASE}/api/update/bookmark/${id}`, {
+      const response = await apiFetch(`${API_BASE}/api/update/bookmark/${id}`, {
         method: "PATCH",
         credentials: "include",
         body: updateBookmark,

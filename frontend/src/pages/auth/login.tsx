@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { User } from "../../types/user";
 import { useNavigate } from "react-router-dom";
 import { API_BASE } from "../../baseUrl";
+import { apiFetch } from "../../utils/apiFetch";
 
 type LoginProps = {
   onLogin: () => void;
@@ -14,9 +15,11 @@ export function Login({ onLogin }: LoginProps) {
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setErrorMessage("");
 
     setUserCreds((prev) => {
       return {
@@ -30,7 +33,7 @@ export function Login({ onLogin }: LoginProps) {
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-    const response: Response = await fetch(`${API_BASE}/api/auth/login`, {
+    const response: Response = await apiFetch(`${API_BASE}/api/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -39,6 +42,7 @@ export function Login({ onLogin }: LoginProps) {
       body: JSON.stringify(userCreds),
     });
     if (!response.ok) {
+      setErrorMessage("Login failed. Please try again.");
       throw new Error("Login failed");
     }
     navigate("/");
@@ -49,6 +53,7 @@ export function Login({ onLogin }: LoginProps) {
     <div className="login-form">
       <form onSubmit={handleSubmit}>
         <div className="login-form-header">Login</div>
+        <div className="login-error">{errorMessage}</div>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input

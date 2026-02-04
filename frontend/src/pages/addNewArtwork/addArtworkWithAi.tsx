@@ -8,6 +8,8 @@ import type { UploadImageData } from "../../types/uploadImageData";
 import { Toast } from "../../components/notifications/toast";
 import { Loader } from "../../components/notifications/loader";
 import { API_BASE } from "../../baseUrl";
+import { ErrorModal } from "../../components/notifications/error";
+import { apiFetch } from "../../utils/apiFetch";
 
 function isMobileDevice(): boolean {
   return (
@@ -30,6 +32,7 @@ function SearchByImage() {
   const [keywords, setKeywords] = useState<Keywords>({ keywords: "" });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -39,17 +42,23 @@ function SearchByImage() {
     setImageUploaded({ image: file });
     const data = new FormData();
     data.append("image", file);
-    const response = await fetch(`${API_BASE}/api/recognize`, {
+    const response = await apiFetch(`${API_BASE}/api/recognize`, {
       method: "POST",
       credentials: "include",
       body: data,
     });
 
-    if (!response.ok) throw new Error("Failed to recognize the image.");
+    if (!response.ok) {
+      setErrorMessage("Something went wrong. Please try again.");
+      throw new Error("Failed to recognize the image.");
+    }
 
     const result = await response.json();
     setLoading(false);
     setOptions(result);
+    if (result.length < 1) {
+      setErrorMessage("No results found. Please try again.");
+    }
   };
 
   const clearForm = () => {
@@ -77,22 +86,31 @@ function SearchByImage() {
     setLoading(true);
     const data = new FormData();
     data.append("keywords", keywords.keywords);
-    const response = await fetch(`${API_BASE}/api/recognize-keywords`, {
+    const response = await apiFetch(`${API_BASE}/api/recognize-keywords`, {
       method: "POST",
       credentials: "include",
       body: data,
     });
-    if (!response.ok) throw new Error("Failed to recognize the image.");
+    if (!response.ok) {
+      setErrorMessage("Something went wrong. Please try again.");
+      throw new Error("Failed to recognize the image.");
+    }
 
     const result = await response.json();
     setLoading(false);
     setOptions(result);
+    if (result.length < 1) {
+      setErrorMessage("No results found. Please try again.");
+    }
   };
 
   const isMobile = isMobileDevice();
 
   return (
     <>
+      {errorMessage !== "" && (
+        <ErrorModal error={errorMessage} setErrorMessage={setErrorMessage} />
+      )}
       {showToast && <Toast message="Saved successfully!" />}
       <div className="search-forms">
         <form className="search-image-form">

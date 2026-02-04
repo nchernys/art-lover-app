@@ -35,15 +35,19 @@ function CardGallery({
 
         <div className="gallery-card-content-wrapper">
           <div className="gallery-card-image">
-            <img
-              src={imageUrl}
-              alt={`${data.imageKey}`}
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-              width={300}
-              height={300}
-            />
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={`${data.imageKey}`}
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                width={300}
+                height={300}
+              />
+            ) : (
+              <div className="gallery-card-no-image">NO IMAGE</div>
+            )}
           </div>
           <div className="gallery-card-details">
             <div className="gallery-card-details-wrapper">
