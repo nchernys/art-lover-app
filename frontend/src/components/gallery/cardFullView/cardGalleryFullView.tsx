@@ -2,7 +2,13 @@ import "./cardGalleryFullView.css";
 import Bookmark from "../../bookmark/bookmark";
 import type { ArtworkInterface } from "../../../types/artwork";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleXmark,
+  faVolumeHigh,
+  faComments,
+  faFaceLaughWink,
+  faArrowsSpin,
+} from "@fortawesome/free-solid-svg-icons";
 import { CardCornerAction } from "../../cardCornerActionButton/cardCornerAction";
 
 function CardGalleryFullView({
@@ -56,6 +62,21 @@ function CardGalleryFullView({
               <div className="gallery-card-movement">{data.movement}</div>
               <div className="gallery-card-year">{data.year}</div>
               <div className="gallery-card-description">{data.description}</div>
+            </div>
+            <div className="gallery-card-defails-full-view-btns">
+              <div title="Listen">
+                <FontAwesomeIcon icon={faVolumeHigh} />
+              </div>
+              <div title="Read more">
+                <FontAwesomeIcon icon={faArrowsSpin} />
+              </div>
+              <div title="Fun facts">
+                <FontAwesomeIcon icon={faFaceLaughWink} />
+              </div>
+
+              <div title="Chat with Artsy">
+                <FontAwesomeIcon icon={faComments} />
+              </div>
             </div>
           </div>
         </div>

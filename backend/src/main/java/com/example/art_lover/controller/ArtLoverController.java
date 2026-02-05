@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.art_lover.dto.artwork.*;
 import com.example.art_lover.model.ArtistModel;
-import com.example.art_lover.model.ArtworkModel;
 import com.example.art_lover.service.ArtworkService;
 import com.example.art_lover.service.GeminiAIDescriptionService;
 import com.example.art_lover.service.GeminiAIImageRecognitionService;

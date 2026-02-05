@@ -62,6 +62,19 @@
   grid-template-columns: 1fr;
 }
 
+.gallery-card-defails-full-view-btns {
+  font-size: 2rem;
+  padding: 1rem 0 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.gallery-card-defails-full-view-btns button {
+  font-size: 1rem;
+  width: auto;
+}
+
 .gallery-card-content-wrapper-full-view {
   padding: 0 2rem 2rem;
 }

@@ -14,7 +14,7 @@ import com.example.art_lover.controller.*;
 class AuthControllerTest {
 
     @Test
-    void signupReturnsToken() throws Exception {
+    void signupReturnsOk() throws Exception {
         AuthService authService = Mockito.mock(AuthService.class);
         Mockito.doNothing().when(authService).signup("email", "password");
 
@@ -30,7 +30,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void loginReturnsToken() throws Exception {
+    void loginReturnsOk() throws Exception {
         AuthService authService = Mockito.mock(AuthService.class);
         Mockito.when(authService.login("email", "password"))
                 .thenReturn("token");
@@ -47,7 +47,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void logoutReturnsToken() throws Exception {
+    void logoutReturnsOk() throws Exception {
         AuthService authService = Mockito.mock(AuthService.class);
 
         AuthController controller = new AuthController(authService);
