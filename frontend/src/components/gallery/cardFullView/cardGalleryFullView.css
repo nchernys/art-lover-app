@@ -63,16 +63,11 @@
 }
 
 .gallery-card-defails-full-view-btns {
-  font-size: 2rem;
-  padding: 1rem 0 0;
+  font-size: 1.5rem;
+  padding: 0.8rem 0;
   display: flex;
   align-items: center;
-  gap: 2rem;
-}
-
-.gallery-card-defails-full-view-btns button {
-  font-size: 1rem;
-  width: auto;
+  gap: 0.8rem;
 }
 
 .gallery-card-content-wrapper-full-view {
@@ -81,6 +76,7 @@
 
 .gallery-card-content-wrapper-full-view .gallery-card-title {
   font-weight: 700;
+  font-size: 1.2em;
 }
 
 .gallery-card-content-wrapper-full-view .gallery-card-year {

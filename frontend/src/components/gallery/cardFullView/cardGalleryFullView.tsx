@@ -1,4 +1,5 @@
 import "./cardGalleryFullView.css";
+import { useEffect, useRef, useState } from "react";
 import Bookmark from "../../bookmark/bookmark";
 import type { ArtworkInterface } from "../../../types/artwork";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,8 +9,12 @@ import {
   faComments,
   faFaceLaughWink,
   faArrowsSpin,
+  faPause,
+  faStop,
 } from "@fortawesome/free-solid-svg-icons";
 import { CardCornerAction } from "../../cardCornerActionButton/cardCornerAction";
+
+type ReadAction = "read" | "stop" | "pause";
 
 function CardGalleryFullView({
   data,
@@ -22,10 +27,42 @@ function CardGalleryFullView({
   onBookmarkUpdate: (id: string) => Promise<void>;
   onImageFullView: () => void;
 }) {
+  const descriptionRef = useRef<HTMLDivElement | null>(null);
+  const [playing, setPlaying] = useState<boolean>(false);
+
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
+
   const image =
     data.imageKey !== null
       ? `https://pub-222ffb7a0765466cba73cd4826463187.r2.dev/${data.imageKey}`
       : `${data.imageUrl}`;
+
+  const readDescription = (action: ReadAction) => {
+    if (!descriptionRef.current) return;
+    const text = descriptionRef.current.textContent;
+    if (!text) return;
+    const synth = window.speechSynthesis;
+    if (action === "read") {
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (!synth.paused) {
+        synth.cancel();
+        synth.speak(utterance);
+      } else {
+        synth.resume();
+      }
+      setPlaying(true);
+    } else if (action === "pause" && synth.speaking) {
+      synth.pause();
+      setPlaying(false);
+    } else if (action === "stop" && synth.speaking) {
+      synth.cancel();
+      setPlaying(false);
+    }
+  };
 
   return (
     <div className="gallary-card-screen-full-view">
@@ -61,21 +98,22 @@ function CardGalleryFullView({
               <div className="gallery-card-artist">{data.artist}</div>
               <div className="gallery-card-movement">{data.movement}</div>
               <div className="gallery-card-year">{data.year}</div>
-              <div className="gallery-card-description">{data.description}</div>
-            </div>
-            <div className="gallery-card-defails-full-view-btns">
-              <div title="Listen">
-                <FontAwesomeIcon icon={faVolumeHigh} />
+              <div className="gallery-card-defails-full-view-btns">
+                <FontAwesomeIcon
+                  icon={faVolumeHigh}
+                  onClick={() => readDescription("read")}
+                />
+                <FontAwesomeIcon
+                  icon={faPause}
+                  onClick={() => readDescription("pause")}
+                />
+                <FontAwesomeIcon
+                  icon={faStop}
+                  onClick={() => readDescription("stop")}
+                />
               </div>
-              <div title="Read more">
-                <FontAwesomeIcon icon={faArrowsSpin} />
-              </div>
-              <div title="Fun facts">
-                <FontAwesomeIcon icon={faFaceLaughWink} />
-              </div>
-
-              <div title="Chat with Artsy">
-                <FontAwesomeIcon icon={faComments} />
+              <div ref={descriptionRef} className="gallery-card-description">
+                {data.description}
               </div>
             </div>
           </div>
