@@ -73,6 +73,8 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Filter out non-image media**: Excludes non-bitmap Wikimedia Commons files (e.g., PDF, DJVU) by filtering on mediatype=BITMAP and image/\* MIME types.
 - **Face-Focused Image Preview**: Automatically centers detected faces in gallery preview images to improve visual framing (powered by Gemini image recognition for face and bounding box detection).
 - **Full-Screen Image Viewer**: Provides an expanded viewing experience in an immersive, distraction-free full-screen mode.
+- **Text-to-Speech:** Enables text-to-speech for artwork descriptions in the full view card
+- **Testing:** Adds JUnit 5 tests for controller endpoints
 
 ## Future Improvements
 

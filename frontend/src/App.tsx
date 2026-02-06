@@ -59,7 +59,7 @@ export default function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <Gallery />
+              <Gallery userId={userId} />
             </ProtectedRoute>
           }
         />

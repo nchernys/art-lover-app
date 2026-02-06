@@ -6,17 +6,19 @@ import CardGalleryFullView from "../../components/gallery/cardFullView/cardGalle
 import type { ArtworkInterface } from "../../types/artwork";
 import { CardGalleryImageFullView } from "../../components/gallery/imageFullView/cardGalleryImageFullView";
 import { DeleteModal } from "../../components/gallery/modals/deleteModal";
+import { Chatbot } from "../../components/chat/chatbot";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { API_BASE } from "../../baseUrl";
 import { apiFetch } from "../../utils/apiFetch";
+
 interface DeleteModalInterface {
   id: string;
   title: string;
 }
 
-function Gallery() {
+function Gallery({ userId }: { userId: string }) {
   const [searchParams] = useSearchParams();
   const isSearchMode = searchParams.get("search") === "true";
   const isBookmarkMode = searchParams.get("bookmarked") === "true";
@@ -30,6 +32,7 @@ function Gallery() {
     title: "",
   });
   const [query, setQuery] = useState<string>("");
+  const [chatbotVisible, setChatbotVisible] = useState<boolean>(false);
 
   useEffect(() => {
     fetchData();
@@ -135,8 +138,24 @@ function Gallery() {
       ? filteredArtworks
       : artworks;
 
+  const handleChatbotVisibility = () => {
+    setChatbotVisible((prev) => !prev);
+    console.log(chatbotVisible);
+  };
+
+  const handleOpenChatbot = () => {
+    setChatbotVisible(true);
+  };
+
   return (
     <>
+      <Chatbot
+        onChangeChatbotState={handleChatbotVisibility}
+        chatbotVisible={chatbotVisible}
+        userId={userId}
+        selectedArtworkId={selectedArtworkId}
+        data={selectedArtwork}
+      />
       {isSearchMode && (
         <input
           type="text"
@@ -176,6 +195,7 @@ function Gallery() {
               onClose={handleFullViewClose}
               onBookmarkUpdate={handleUpdateBookmark}
               onImageFullView={handleImageFullView}
+              onOpenChatbot={handleOpenChatbot}
             />
           </div>
         )}

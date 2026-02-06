@@ -11,6 +11,8 @@ import {
   faArrowsSpin,
   faPause,
   faStop,
+  faComment,
+  faBrush,
 } from "@fortawesome/free-solid-svg-icons";
 import { CardCornerAction } from "../../cardCornerActionButton/cardCornerAction";
 
@@ -21,11 +23,13 @@ function CardGalleryFullView({
   onClose,
   onBookmarkUpdate,
   onImageFullView,
+  onOpenChatbot,
 }: {
   data: ArtworkInterface;
   onClose: () => void;
   onBookmarkUpdate: (id: string) => Promise<void>;
   onImageFullView: () => void;
+  onOpenChatbot: () => void;
 }) {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const [playing, setPlaying] = useState<boolean>(false);
@@ -99,18 +103,30 @@ function CardGalleryFullView({
               <div className="gallery-card-movement">{data.movement}</div>
               <div className="gallery-card-year">{data.year}</div>
               <div className="gallery-card-defails-full-view-btns">
-                <FontAwesomeIcon
-                  icon={faVolumeHigh}
-                  onClick={() => readDescription("read")}
-                />
-                <FontAwesomeIcon
-                  icon={faPause}
-                  onClick={() => readDescription("pause")}
-                />
-                <FontAwesomeIcon
-                  icon={faStop}
-                  onClick={() => readDescription("stop")}
-                />
+                <div className="gallery-card-details-full-view-btns-outloud">
+                  <FontAwesomeIcon
+                    icon={faVolumeHigh}
+                    onClick={() => readDescription("read")}
+                  />
+                  <FontAwesomeIcon
+                    icon={faPause}
+                    onClick={() => readDescription("pause")}
+                  />
+                  <FontAwesomeIcon
+                    icon={faStop}
+                    onClick={() => readDescription("stop")}
+                  />
+                </div>
+                <div className="gallery-card-details-full-view-btns-gap">|</div>
+                <div
+                  className="gallery-card-details-full-view-btns-ask-artsy"
+                  onClick={onOpenChatbot}
+                >
+                  <div>ASK ARTSY</div>
+                  <div>
+                    <FontAwesomeIcon icon={faBrush} />
+                  </div>
+                </div>
               </div>
               <div ref={descriptionRef} className="gallery-card-description">
                 {data.description}

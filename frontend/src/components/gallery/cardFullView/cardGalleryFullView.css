@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 2rem;
+  padding: 1rem;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -66,12 +66,27 @@
   font-size: 1.5rem;
   padding: 0.8rem 0;
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.gallery-card-details-full-view-btns-outloud {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.8rem;
+  cursor: pointer;
+}
+
+.gallery-card-details-full-view-btns-ask-artsy {
+  display: flex;
+  gap: 0.8rem;
+  cursor: pointer;
 }
 
 .gallery-card-content-wrapper-full-view {
-  padding: 0 2rem 2rem;
+  padding: 0 1rem 2rem;
 }
 
 .gallery-card-content-wrapper-full-view .gallery-card-title {
@@ -87,6 +102,9 @@
   .gallery-card-image-full-view {
     width: 60%;
   }
+  .gallery-card-content-wrapper-full-view {
+    padding: 0 2rem 2rem;
+  }
 }
 
 @media screen and (min-width: 650px) {
@@ -96,6 +114,10 @@
 }
 
 @media screen and (min-width: 1000px) {
+  .gallery-card-screen-full-view {
+    padding: 2rem;
+  }
+
   .gallery-card-wrapper-full-view {
     width: 50%;
   }

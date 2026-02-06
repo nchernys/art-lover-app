@@ -7,6 +7,8 @@
   --whitesmoke: whitesmoke;
   --hot-pink: #e400e4;
   --dark-red: #c50000;
+  --fire-orange: #d35721;
+  --base-font: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -14,7 +16,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 1rem;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--base-font);
   line-height: 1.5;
   font-weight: 400;
   display: flex;

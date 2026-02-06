@@ -31,7 +31,7 @@ public class ArtLoverController {
 		this.imageRecognitionService = imageRecognitionService;
 	}
 
-	// ---------- Artwork CRUD ----------
+	// artwork CRUD
 
 	@PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ArtworkResponse> saveArtwork(
@@ -83,7 +83,7 @@ public class ArtLoverController {
 		return ResponseEntity.ok("Bookmark updated");
 	}
 
-	// ---------- AI Features ----------
+	// AI features (generate artwork description, recognize artwork from image)
 
 	@GetMapping("/generate-description")
 	public ResponseEntity<String> generateDescription(@RequestParam String userPrompt) {
@@ -104,7 +104,7 @@ public class ArtLoverController {
 		return imageRecognitionService.recognizeKeywords(keywords);
 	}
 
-	// ---------- Artists ----------
+	// artists (fetch all)
 
 	@GetMapping("/artists")
 	public List<ArtistModel> getArtists() {
