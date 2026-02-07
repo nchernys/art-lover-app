@@ -26,6 +26,8 @@ function Gallery({ userId }: { userId: string }) {
   const [selectedArtworkId, setSelectedArtworkId] = useState<string | null>(
     null,
   );
+  const [isChatbotRequestFromCard, setIsChatbotRequestFromCard] =
+    useState<boolean>(false);
   const [imageFullView, setImageFullView] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<DeleteModalInterface>({
     id: "",
@@ -118,7 +120,8 @@ function Gallery({ userId }: { userId: string }) {
     setImageFullView(!imageFullView);
   };
 
-  const selectedArtwork = artworks.find((aw) => aw.id === selectedArtworkId);
+  const selectedArtwork =
+    artworks.find((aw) => aw.id === selectedArtworkId) || null;
 
   const filteredArtworks = artworks.filter(
     (artwork) =>
@@ -140,7 +143,6 @@ function Gallery({ userId }: { userId: string }) {
 
   const handleChatbotVisibility = () => {
     setChatbotVisible((prev) => !prev);
-    console.log(chatbotVisible);
   };
 
   const handleOpenChatbot = () => {
@@ -153,7 +155,8 @@ function Gallery({ userId }: { userId: string }) {
         onChangeChatbotState={handleChatbotVisibility}
         chatbotVisible={chatbotVisible}
         userId={userId}
-        selectedArtworkId={selectedArtworkId}
+        isChatbotRequestFromCard={isChatbotRequestFromCard}
+        setIsChatbotRequestFromCard={setIsChatbotRequestFromCard}
         data={selectedArtwork}
       />
       {isSearchMode && (
@@ -196,6 +199,8 @@ function Gallery({ userId }: { userId: string }) {
               onBookmarkUpdate={handleUpdateBookmark}
               onImageFullView={handleImageFullView}
               onOpenChatbot={handleOpenChatbot}
+              isChatbotRequestFromCard={isChatbotRequestFromCard}
+              setIsChatbotRequestFromCard={setIsChatbotRequestFromCard}
             />
           </div>
         )}

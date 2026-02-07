@@ -24,12 +24,16 @@ function CardGalleryFullView({
   onBookmarkUpdate,
   onImageFullView,
   onOpenChatbot,
+  isChatbotRequestFromCard,
+  setIsChatbotRequestFromCard,
 }: {
   data: ArtworkInterface;
   onClose: () => void;
   onBookmarkUpdate: (id: string) => Promise<void>;
   onImageFullView: () => void;
   onOpenChatbot: () => void;
+  isChatbotRequestFromCard: boolean;
+  setIsChatbotRequestFromCard: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const [playing, setPlaying] = useState<boolean>(false);
@@ -67,6 +71,18 @@ function CardGalleryFullView({
       setPlaying(false);
     }
   };
+
+  const handleAskChatbot = () => {
+    onOpenChatbot();
+    setIsChatbotRequestFromCard(true);
+    console.log("clicked open chatbot");
+  };
+
+  useEffect(() => {
+    return () => {
+      setIsChatbotRequestFromCard(false);
+    };
+  }, []);
 
   return (
     <div className="gallary-card-screen-full-view">
@@ -120,7 +136,7 @@ function CardGalleryFullView({
                 <div className="gallery-card-details-full-view-btns-gap">|</div>
                 <div
                   className="gallery-card-details-full-view-btns-ask-artsy"
-                  onClick={onOpenChatbot}
+                  onClick={handleAskChatbot}
                 >
                   <div>ASK ARTSY</div>
                   <div>

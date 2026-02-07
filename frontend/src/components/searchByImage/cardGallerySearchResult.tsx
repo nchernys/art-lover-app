@@ -51,9 +51,6 @@ function CardGallerySearchResult({
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      console.log("HERE1");
-
-      console.log("HERE2");
 
       const formData = new FormData();
       formData.append("title", data.title);

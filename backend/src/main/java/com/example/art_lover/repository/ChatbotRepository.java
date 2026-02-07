@@ -10,4 +10,6 @@ import com.example.art_lover.model.ChatbotMessageModel;
 public interface ChatbotRepository extends MongoRepository<ChatbotMessageModel, String> {
 
     List<ChatbotMessageModel> findAllByUserId(String userId);
+
+    void deleteAllByUserId(String userId);
 }

@@ -2,6 +2,7 @@ package com.example.art_lover.controller;
 
 import java.util.List;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -35,4 +36,11 @@ public class ChatbotController {
         return ResponseEntity.ok("Message saved");
     }
 
+    @DeleteMapping("/delete-all-messages")
+    public ResponseEntity<String> deleteAllMessages(
+            Authentication authentication) {
+
+        chatbotService.deleteAllMessages(authentication.getName());
+        return ResponseEntity.ok("Messages deleted.");
+    }
 }

@@ -56,6 +56,15 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 
 ---
 
+### Chatbot
+
+| Method | Endpoint             | Description                              |
+| ------ | -------------------- | ---------------------------------------- |
+| GET    | `/api/chat/messages` | Get all chat messages per user           |
+| POST   | `/api/chat/save`     | Add a new message to a chat conversation |
+
+---
+
 ### Search and AI
 
 | Method | Endpoint                                | Description                           |
@@ -75,12 +84,12 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Full-Screen Image Viewer**: Provides an expanded viewing experience in an immersive, distraction-free full-screen mode.
 - **Text-to-Speech:** Enables text-to-speech for artwork descriptions in the full view card
 - **Testing:** Adds JUnit 5 tests for controller endpoints
+- **AI Chatbot:** Uses prompt-engineered AI to interpret user questions about artwork and generate relevant, context-aware responses based on general-domain art knowledge.
 
 ## Future Improvements
 
 - **Native Mobile Apps**: iOS and Android applications to enable on-the-spot artwork exploration in museums.
-- **Learn More Enhancements**: Expand and enrich detailed content for artworks, artists, movements, and periods.
-- **Fun Facts Feature**: Provide random, engaging facts related to an artwork.
+- **AI Chatbot**: Improve user learning and engagement by incorporating authoritative art history training materials (textbooks, articles, PDFs) and using Retrieval-Augmented Generation (RAG) to produce responses grounded in this curated content.
 - **Authorization & Authentication**: Add email-based OTP verification during user sign-up to validate user identity.
 - **Testing**: Added React component and interaction tests, along with Spring Boot service and controller tests to validate core application behavior.
 
@@ -97,3 +106,7 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 ### Details View
 
 ![Gallery View](artlover3.jpg)
+
+### AI Chatbot
+
+![Gallery View](artlover4.jpg)
