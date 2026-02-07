@@ -156,21 +156,17 @@
 
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-voyage-ai</artifactId>
-			<version>0.35.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
 			<version>0.35.0</version>
 		</dependency>
 
+
 		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>google-cloud-vertexai</artifactId>
-			<version>1.43.0</version>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-open-ai</artifactId>
+			<version>0.35.0</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

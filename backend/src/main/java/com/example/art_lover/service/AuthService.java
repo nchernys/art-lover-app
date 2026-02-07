@@ -1,19 +1,12 @@
 package com.example.art_lover.service;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
-import com.example.art_lover.dto.artwork.ArtworkDetailsView;
 import com.example.art_lover.exceptions.EmailAlreadyExistsException;
 import com.example.art_lover.exceptions.InvalidCredentialsException;
 import com.example.art_lover.model.UserModel;
-import com.example.art_lover.repository.ArtistRepository;
-import com.example.art_lover.repository.ArtworksRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.example.art_lover.service.JWTService;
-import com.example.art_lover.model.UserModel;
 import com.example.art_lover.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
