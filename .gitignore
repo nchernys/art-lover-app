@@ -9,3 +9,6 @@ frontend/.env
 .vscode/
 .idea/
 .DS_Store
+
+# RAG
+ingest/

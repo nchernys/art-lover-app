@@ -65,14 +65,13 @@ public class AuthService {
 
     // sign up
     public void signup(String email, String password) {
-
         if (userRepository.findByEmail(email).isPresent()) {
             throw new EmailAlreadyExistsException("Account already exists");
         }
 
         UserModel user = new UserModel();
         user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(email));
+        user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
     }

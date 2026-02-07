@@ -42,6 +42,10 @@
   font-weight: 500;
 }
 
+.chatbot-window-header-close {
+  cursor: pointer;
+}
+
 .chatbot-window-header .header-icon {
   font-size: 1.3rem;
   margin-left: 0.5rem;
@@ -98,7 +102,7 @@
 
 .chatbot-window-input {
   width: 100%;
-  height: 6rem;
+  min-height: 6rem;
   color: var(--whitesmoke);
   padding: 0.8rem 0.5rem;
   background-color: var(--fire-orange);
@@ -158,9 +162,9 @@
 .chatbot-warning {
   width: 100%;
   height: auto;
-  font-size: 0.8em;
-  line-height: 1;
-  padding: 1rem 2rem;
+  font-size: 0.75em;
+  line-height: 1.2;
+  padding: 0.7rem 1rem;
   text-align: center;
   box-sizing: border-box;
   display: flex;

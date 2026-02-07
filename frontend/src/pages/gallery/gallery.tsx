@@ -18,7 +18,7 @@ interface DeleteModalInterface {
   title: string;
 }
 
-function Gallery({ userId }: { userId: string }) {
+function Gallery({ userId }: { userId: string | null }) {
   const [searchParams] = useSearchParams();
   const isSearchMode = searchParams.get("search") === "true";
   const isBookmarkMode = searchParams.get("bookmarked") === "true";

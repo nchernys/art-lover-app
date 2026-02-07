@@ -46,6 +46,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<String> me(Authentication authentication) {
+        System.out.println("ME AUTHENTICATION");
         return ResponseEntity.ok(authentication.getName());
     }
 }

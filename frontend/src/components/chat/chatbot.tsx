@@ -16,7 +16,7 @@ import {
 type ChatbotProps = {
   chatbotVisible: boolean;
   onChangeChatbotState: () => void;
-  userId: string;
+  userId: string | null;
   isChatbotRequestFromCard: boolean;
   setIsChatbotRequestFromCard: React.Dispatch<React.SetStateAction<boolean>>;
   data: ArtworkInterface | null;
@@ -27,7 +27,7 @@ type Role = "user" | "assistant";
 type ChatMessage = {
   role: Role;
   content: string;
-  userId: string;
+  userId: string | null;
   createdAt: Date;
 };
 
@@ -37,7 +37,6 @@ export function Chatbot({
   userId,
   data,
   isChatbotRequestFromCard,
-  setIsChatbotRequestFromCard,
 }: ChatbotProps) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [userRequest, setUserRequest] = useState<string>("");
@@ -156,7 +155,7 @@ export function Chatbot({
   };
 
   const hasMessages = messages.length > 0;
-  const conversationLimitReached = messages.length >= 50;
+  const conversationLimitReached = messages.length >= 100;
 
   return (
     <div className="chatbot-wrapper">
@@ -167,7 +166,9 @@ export function Chatbot({
               Ask Artsy
               <FontAwesomeIcon icon={faBrush} className="header-icon" />
             </div>
-            <FontAwesomeIcon icon={faMinus} onClick={onChangeChatbotState} />
+            <div className="chatbot-window-header-close">
+              <FontAwesomeIcon icon={faMinus} onClick={onChangeChatbotState} />
+            </div>
           </div>
           <div className="chatbot-window-chat">
             <div className="chatbot-window-chat-inner-wrapper">
@@ -257,8 +258,8 @@ export function Chatbot({
           )}
           <div className="chatbot-warning">
             <div className="chatbot-warning-message">
-              This conversation stores up to 100 messages. When the limit is
-              reached, older messages are deleted automatically.
+              This chat stores up to 100 messages. When the limit is reached,
+              download the conversation and delete all messages.
             </div>
             <button
               className="chatbot-download-btn"
@@ -271,6 +272,7 @@ export function Chatbot({
             <form onSubmit={handleSubmitForm}>
               <div className="text-wrapper">
                 <textarea
+                  disabled={conversationLimitReached}
                   placeholder="Start typing ... "
                   value={userRequest}
                   onChange={handleChange}
