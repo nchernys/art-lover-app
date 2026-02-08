@@ -8,6 +8,7 @@ import Gallery from "./pages/gallery/gallery";
 import SearchByImage from "./pages/addNewArtwork/addArtworkWithAi";
 import { Login } from "./pages/auth/login";
 import { Signup } from "./pages/auth/signup";
+import { Rag } from "./components/chat/rag";
 import ProtectedRoute from "./security/protectedRoute";
 import { API_BASE } from "./baseUrl";
 
@@ -76,6 +77,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <SearchByImage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ask-book"
+          element={
+            <ProtectedRoute>
+              <Rag />
             </ProtectedRoute>
           }
         />

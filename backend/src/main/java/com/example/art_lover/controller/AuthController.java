@@ -1,6 +1,7 @@
 package com.example.art_lover.controller;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody AuthRequest request) {
         authService.signup(request.getEmail(), request.getPassword());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
@@ -46,7 +47,6 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<String> me(Authentication authentication) {
-        System.out.println("ME AUTHENTICATION");
         return ResponseEntity.ok(authentication.getName());
     }
 }
