@@ -38,7 +38,6 @@ public class ArtLoverController {
 			@ModelAttribute CreateArtworkCommand artwork,
 			@RequestPart(value = "imageFile", required = false) MultipartFile imageFile,
 			Authentication authentication) {
-
 		artworkService.saveArtwork(artwork, imageFile, authentication.getName());
 		return ResponseEntity.ok(new ArtworkResponse("Artwork saved successfully"));
 	}

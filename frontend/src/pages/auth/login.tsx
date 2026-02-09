@@ -72,7 +72,7 @@ export function Login({ onLogin }: LoginProps) {
             onChange={handleChange}
           />
         </div>
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       <div className="login-signup-message">
         Don't have an account? <a href="/sign-up">Sign Up</a>

@@ -13,6 +13,7 @@ function Bookmark({
 }) {
   return (
     <div
+      data-testid="bookmark"
       className="gallery-card-bookmark"
       onClick={() => onBookmarkUpdate(data.id)}
     >

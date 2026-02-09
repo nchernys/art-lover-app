@@ -19,8 +19,12 @@ export function DeleteModal({
         Are you sure you want to delete <i>{title}</i> from your gallery?
       </div>
       <div className="btn-group">
-        <button onClick={() => onDeleteModal("", "")}>Cancel</button>
-        <button onClick={() => onDelete(id)}>OK</button>
+        <button className="cancel-delete" onClick={() => onDeleteModal("", "")}>
+          Cancel
+        </button>
+        <button className="confirm-delete" onClick={() => onDelete(id)}>
+          OK
+        </button>
       </div>
     </div>
   );

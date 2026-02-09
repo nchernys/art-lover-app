@@ -17,6 +17,7 @@ export function CardCornerAction<T>({
 }: CardActionCornerProps<T>) {
   return (
     <div
+      data-testid="delete"
       className={`gallery-card-action-corner ${corner}`}
       onClick={() => onAction(payload)}
     >

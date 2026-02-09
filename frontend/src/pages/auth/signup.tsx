@@ -147,7 +147,7 @@ export function Signup() {
             <div className="signup-error-message">Passwords must match!</div>
           )}
         </div>
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       <div className="signup-message">
         Already have an account? <a href="/login">Log in</a>

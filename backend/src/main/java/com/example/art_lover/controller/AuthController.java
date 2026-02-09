@@ -33,6 +33,7 @@ public class AuthController {
     public ResponseEntity<Void> login(
             @RequestBody AuthRequest request,
             HttpServletResponse response) {
+        System.out.println(request.getEmail() + " +++++++++ " + request.getPassword());
         String cookie = authService.login(request.getEmail(), request.getPassword());
         response.addHeader(HttpHeaders.SET_COOKIE, cookie);
         return ResponseEntity.ok().build();
@@ -42,6 +43,12 @@ public class AuthController {
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         String cookie = authService.logout();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/delete-user-by-email")
+    public ResponseEntity<Void> deleteUserById(@RequestBody AuthRequest request) {
+        authService.deleteUserByEmail(request.getEmail());
         return ResponseEntity.ok().build();
     }
 

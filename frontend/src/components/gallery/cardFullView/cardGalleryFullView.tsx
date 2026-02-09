@@ -6,12 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleXmark,
   faVolumeHigh,
-  faComments,
-  faFaceLaughWink,
-  faArrowsSpin,
   faPause,
   faStop,
-  faComment,
   faBrush,
 } from "@fortawesome/free-solid-svg-icons";
 import { CardCornerAction } from "../../cardCornerActionButton/cardCornerAction";
@@ -24,7 +20,6 @@ function CardGalleryFullView({
   onBookmarkUpdate,
   onImageFullView,
   onOpenChatbot,
-  isChatbotRequestFromCard,
   setIsChatbotRequestFromCard,
 }: {
   data: ArtworkInterface;
@@ -85,7 +80,7 @@ function CardGalleryFullView({
   }, []);
 
   return (
-    <div className="gallary-card-screen-full-view">
+    <div className="gallery-card-screen-full-view">
       <div className="gallery-card-wrapper-full-view">
         <div className="gallery-card-nav-full-view">
           <div
@@ -135,6 +130,7 @@ function CardGalleryFullView({
                 </div>
                 <div className="gallery-card-details-full-view-btns-gap">|</div>
                 <div
+                  data-testid="open-chatbot"
                   className="gallery-card-details-full-view-btns-ask-artsy"
                   onClick={handleAskChatbot}
                 >

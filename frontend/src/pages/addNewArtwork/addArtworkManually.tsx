@@ -138,7 +138,6 @@ function UploadArtwork() {
           <select
             name="artistId"
             value={formData.artistId}
-            defaultValue=""
             onChange={handleChange}
             required
           >
@@ -217,7 +216,7 @@ function UploadArtwork() {
             required
           />
         </div>
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </>
   );

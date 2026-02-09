@@ -1,12 +1,14 @@
 # ART LOVER APP (in progress)
 
-As an art enthusiast, I enjoy learning about artworks beyond simply viewing an image, including their historical context, artistic movements, and the stories behind them. However, museum descriptions are often limited to brief blurbs or basic facts such as the title, artist, country, and year of creation, which can feel disappointing and, at times, elitist—serving primarily those who already know a great deal about art.
+**Art Lover** is a full-stack web application that helps users understand artworks beyond basic museum labels by combining image recognition, AI-generated context, and curated art history data.
 
-To address this gap, I created **Art Lover**, an app designed to help art enthusiasts enjoy and understand art on the spot, without the need to search the web or jump between multiple pages while standing in a museum.
+### Key Features
 
-The Art Lover app is currently **web-based**, with **native mobile versions for iOS and Android planned**. It allows users to explore artworks through image uploads and keyword searches. By uploading an image of a painting, users receive the artist’s name, artwork title, artistic movement, historical period, and an AI-generated description that highlights the work’s stylistic and semantic features, as well as its contribution to the art world.
-
-Users can explore further by clicking **Learn More** buttons to access additional information about the artist, movement, period, or artwork itself. For a more immersive experience, users can press **Play** to listen to the generated descriptions while viewing the artwork. Identified artworks and their generated descriptions can be saved to a personal gallery for later enjoyment.
+- Upload an artwork image or search by keywords to identify the artwork and artist
+- Generate AI descriptions covering artistic style, movement, historical context, and significance
+- Listen to artwork descriptions via text-to-speech for hands-free exploration
+- Save, bookmark, and manage artworks in a personal gallery
+- Explore artworks further using an AI chatbot powered by Retrieval-Augmented Generation (RAG) and trained on authoritative art history sources
 
 ---
 
@@ -15,9 +17,10 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Frontend:** React.js (TypeScript)
 - **Backend:** Java, Spring Boot
 - **AI Services:** Gemini (AI description and image recognition)
-- **Database:** MongoDB Atlas
+- **Database:** MongoDB Atlas with Vector Search
 - **Cloud Storage:** Cloudflare R2
-- **External APIs:** The MET Museum API, Rijksmuseum API, Smithsonian Museum API, Europeana API, and Wikimedia Commons API for cultural heritage and artwork data
+- **External APIs:** The MET Museum API, Rijksmuseum API, Smithsonian Museum API, Europeana API, and Wikimedia Commons API
+- **Testing:** Playwrite (E2E), JUnit5 (Spring Boot endpoints)
 - **Deployment:** AWS EC2 (Java Spring Boot backend), Amazon S3 + Cloudfront (React frontend)
 
 ---
@@ -83,15 +86,8 @@ Users can explore further by clicking **Learn More** buttons to access additiona
 - **Face-Focused Image Preview**: Automatically centers detected faces in gallery preview images to improve visual framing (powered by Gemini image recognition for face and bounding box detection).
 - **Full-Screen Image Viewer**: Provides an expanded viewing experience in an immersive, distraction-free full-screen mode.
 - **Text-to-Speech:** Enables text-to-speech for artwork descriptions in the full view card
-- **Testing:** Adds JUnit 5 tests for controller endpoints
-- **AI Chatbot:** Uses prompt-engineered AI to interpret user questions about artwork and generate relevant, context-aware responses based on general-domain art knowledge.
-
-## Future Improvements
-
-- **Native Mobile Apps**: iOS and Android applications to enable on-the-spot artwork exploration in museums.
 - **AI Chatbot**: Improve user learning and engagement by incorporating authoritative art history training materials (textbooks, articles, PDFs) and using Retrieval-Augmented Generation (RAG) to produce responses grounded in this curated content.
-- **Authorization & Authentication**: Add email-based OTP verification during user sign-up to validate user identity.
-- **Testing**: Added React component and interaction tests, along with Spring Boot service and controller tests to validate core application behavior.
+- **Testing:** Includes JUnit 5 tests for Spring Boot controllers and Playwright E2E tests for the React frontend.
 
 ## Screenshots
 
