@@ -6,6 +6,7 @@ import type { ArtworkSearchResultInterface } from "../../types/artworkSearchResu
 import type { UploadImageData } from "../../types/uploadImageData";
 import { API_BASE } from "../../baseUrl";
 import { apiFetch } from "../../utils/apiFetch";
+import { BlurImage } from "../styling/blurImagePlaceholderOnLoad";
 
 interface CardGallerySearchResultProps {
   data: ArtworkSearchResultInterface;
@@ -110,17 +111,13 @@ function CardGallerySearchResult({
         <div className="search-gallery-card-images">
           {allImages?.map((item, index) => (
             <div
-              key={`image-${index}`}
+              key={`image-${index}-${item}`}
               className={`search-gallery-card-image-wrapper ${
                 item === imageSelected ? "selected" : ""
               }`}
               onClick={() => setImageSelected(item)}
             >
-              <img
-                src={item}
-                alt={`${data.title} by ${data.artist}`}
-                loading="lazy"
-              />
+              <BlurImage src={item} alt={`${data.title} by ${data.artist}`} />
             </div>
           ))}
         </div>
