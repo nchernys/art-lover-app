@@ -25,6 +25,13 @@
 
 ---
 
+## Live Demo
+
+The application is deployed on AWS but the instance is currently paused for cost reasons.  
+I am happy to spin it up on request.
+
+---
+
 ## API Endpoints
 
 ### Authentication
