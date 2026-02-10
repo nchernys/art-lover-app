@@ -99,17 +99,13 @@ I am happy to spin it up on request.
 ## Screenshots
 
 ### Artwork Recognition
-
-![Home Page](artlover1.jpg)
+<img src="artlover1.jpg" style="width: 80%" />
 
 ### Gallery View
-
-![Artwork Recognition](artlover2.jpg)
+<img src="artlover2.jpg" style="width: 80%" />
 
 ### Details View
-
-![Gallery View](artlover3.jpg)
+<img src="artlover3.jpg" style="width: 80%" />
 
 ### AI Chatbot
-
-![Gallery View](artlover4.jpg)
+<img src="artlover4.jpg" style="width: 80%" />
