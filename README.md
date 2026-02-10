@@ -100,16 +100,16 @@ I am happy to spin it up on request.
 
 ### Artwork Recognition
 
-<img src="artlover1.jpg" style="width: 400px" />
+<img src="artlover1.jpg" style="width: 600px" />
 
 ### Gallery View
 
-<img src="artlover2.jpg" style="width: 400px" />
+<img src="artlover2.jpg" style="width: 600px" />
 
 ### Details View
 
-<img src="artlover3.jpg" style="width: 400px" />
+<img src="artlover3.jpg" style="width: 600px" />
 
 ### AI Chatbot
 
-<img src="artlover4.jpg" style="width: 400px" />
+<img src="artlover4.jpg" style="width: 600px" />
